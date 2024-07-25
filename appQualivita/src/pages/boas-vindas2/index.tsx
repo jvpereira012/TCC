@@ -1,11 +1,12 @@
 import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import * as Animation from 'react-native-animatable';
 import React from 'react';
-
+import { useNavigation } from '@react-navigation/native';
+import { StackTypes } from '../../routes';
 export default function Boasvindas2() {
+    const navigation = useNavigation<StackTypes>();
     return (
       <View style={styles.container}>
-          
             <Text style={styles.title}> CONSCIENTIZE-SE</Text>
             <View>
                 <Image 
@@ -20,7 +21,9 @@ export default function Boasvindas2() {
                 </Text>
             </View>
             <View style={styles.containerButton}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={
+                    () => navigation.navigate('Boasvindas3')
+                }>
                     <View style={styles.buttonView}>
                         <Image 
                             source={require('../../../assets/iconeseimagens_app/seta.png')}

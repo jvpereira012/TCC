@@ -1,10 +1,11 @@
 import { Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { StackTypes } from '../../routes';
 
 
 export default function Boasvindas() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackTypes>();
     return (
       <View style={styles.container}>
           

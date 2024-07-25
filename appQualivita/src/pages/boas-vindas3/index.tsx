@@ -1,8 +1,11 @@
 import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import * as Animation from 'react-native-animatable';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { StackTypes } from '../../routes';
 
 export default function Boasvindas3() {
+    const navigation = useNavigation<StackTypes>();
     return (
       <View style={styles.container}>
           
@@ -20,7 +23,7 @@ export default function Boasvindas3() {
                 </Text>
             </View>
             <View style={styles.containerButton}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
                     <View style={styles.buttonView}>
                         <Image 
                             source={require('../../../assets/iconeseimagens_app/seta.png')}

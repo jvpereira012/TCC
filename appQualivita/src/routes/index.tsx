@@ -1,3 +1,4 @@
+import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import { createStackNavigator } from "@react-navigation/stack";
 import Boasvindas from '../pages/boas-vindas';
 import Boasvindas2 from '../pages/boas-vindas2';
@@ -7,6 +8,16 @@ import Cadastro from "../pages/cadastro";
 
 
 const Stack = createStackNavigator();
+
+type StackNavigation = {
+  Boasvindas: undefined;
+  Boasvindas2: undefined;
+  Boasvindas3: undefined;
+  Login: undefined;
+  Cadastro: undefined;
+}
+
+export type StackTypes = NativeStackNavigationProp<StackNavigation>;
 
 export default function Routes (){
   return(
