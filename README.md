@@ -1,0 +1,1 @@
+O projeto de aplicativo Qualivita é um Trabalho de Conclusão de Curso (TCC) que consiste na criação de um sistema que permita a visualização de dados sobre a qualidade do ar com a utilização de dispositivos
