@@ -5,7 +5,7 @@ import Boasvindas2 from '../pages/boas-vindas2';
 import Boasvindas3 from '../pages/boas-vindas3';
 import Login from "../pages/login";
 import Cadastro from "../pages/cadastro";
-
+import Home from "../pages/Home";
 
 const Stack = createStackNavigator();
 
@@ -15,6 +15,7 @@ type StackNavigation = {
   Boasvindas3: undefined;
   Login: undefined;
   Cadastro: undefined;
+  Home: undefined;
 }
 
 export type StackTypes = NativeStackNavigationProp<StackNavigation>;
@@ -49,6 +50,11 @@ export default function Routes (){
       <Stack.Screen
         name = "Cadastro"
         component={Cadastro}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name = "Home"
+        component={Home}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
