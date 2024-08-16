@@ -5,7 +5,7 @@ import Boasvindas2 from '../pages/boas-vindas2';
 import Boasvindas3 from '../pages/boas-vindas3';
 import Login from "../pages/login";
 import Cadastro from "../pages/cadastro";
-import Home from "../pages/Home";
+import home from "../pages/home";
 
 const Stack = createStackNavigator();
 
@@ -54,7 +54,7 @@ export default function Routes (){
       />
       <Stack.Screen
         name = "Home"
-        component={Home}
+        component={home}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

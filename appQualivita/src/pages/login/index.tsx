@@ -17,16 +17,17 @@ export default function Login() {
         <Text>ENTRE NA PLATAFORMA PARA CONTINUAR</Text>
       </View>
       <View style={styles.formView}>
-        <Text style={styles.textLabel}>EMAIL*</Text>
-        <TextInput 
-          style={styles.textInput}
-          placeholder='Insira seu email'
+          <Text style={styles.textLabel}>EMAIL*</Text>
+          <TextInput 
+            style={styles.textInput}
+            placeholder='Insira seu email'
         />
         <Text style={styles.textLabel}>SENHA*</Text>
         <TextInput 
           style={styles.textInput}
           placeholder='Insira sua senha'
           secureTextEntry={true}
+          
         />
         <TouchableOpacity style={styles.buttonInput} onPress={() => {navigation.navigate('Home')}}>
           <Text style={{ color: '#fff' }}>ENTRAR</Text>
@@ -44,7 +45,7 @@ export default function Login() {
         <TouchableOpacity style={styles.buttonIcon}>
           <Image 
             source={require('../../../assets/iconeseimagens_app/icon3.png')}
-            style={{ width: 64, height: 64 }}
+            style={{ width: 45, height: 45 }}
           />
         </TouchableOpacity>
       </View>
@@ -77,12 +78,16 @@ const styles = StyleSheet.create({
   },
   textLabel: {
     fontSize: 14,
-    textAlign: 'left'
+  marginBottom: 5, 
+  width: '100%', 
+  maxWidth: 250, 
+  textAlign: 'left', 
+  alignSelf: 'center', 
   },
   buttonInput: {
     fontSize: 12.1,
     textAlign: 'center',
-    borderRadius: 15,
+    borderRadius: 8,
     color: '#fff',
     fontWeight: 'bold',
     backgroundColor: '#00Bf63',
@@ -93,11 +98,12 @@ const styles = StyleSheet.create({
   },
   textInput: {
     fontSize: 10.1,
-    borderRadius: 25,
+    borderRadius: 15,
     backgroundColor: '#fff',
     width: '75%',
-    height: 38,
-    paddingVertical: 10, 
+    height: 50,
+    paddingHorizontal: 10,
+    paddingVertical: 5, 
     marginBottom: 12,
   },
   titletext: {
@@ -106,6 +112,7 @@ const styles = StyleSheet.create({
     marginBottom: 10, 
   },
   buttonIcon: {
+    paddingVertical: 10,
     alignItems: 'center',
   },
   infButtons: {

@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     fontSize: 10.1,
-    borderRadius: 25,
+    borderRadius: 15,
     backgroundColor: '#fff',
     width: '75%',
     height: 38,
