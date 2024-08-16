@@ -14,8 +14,8 @@ export default function Login() {
           source={require('../../../assets/icon.png')}
           style={styles.imgContainer}
         />
-        <Text style={styles.titletext}>Login</Text>
-        <Text>ENTRE NA PLATAFORMA PARA CONTINUAR</Text>
+        <Text style={styles.titletext}>Cadastro</Text>
+        <Text style={{marginBottom: 40}}>INSIRA SUAS INFORMAÇÕES NOS CAMPOS ABAIXO</Text>
       </View>
       <View style={styles.formView}>
         <Text style={styles.textLabel}>EMAIL*</Text>
@@ -80,12 +80,16 @@ const styles = StyleSheet.create({
   },
   textLabel: {
     fontSize: 14,
-    textAlign: 'left'
+  marginBottom: 5, 
+  width: '100%', 
+  maxWidth: 250, 
+  textAlign: 'left', 
+  alignSelf: 'center', 
   },
   buttonInput: {
     fontSize: 12.1,
     textAlign: 'center',
-    borderRadius: 15,
+    borderRadius: 8,
     color: '#fff',
     fontWeight: 'bold',
     backgroundColor: '#00Bf63',
@@ -95,12 +99,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10, 
   },
   textInput: {
-    fontSize: 10.1,
+      fontSize: 10.1,
     borderRadius: 15,
     backgroundColor: '#fff',
     width: '75%',
-    height: 38,
-    paddingVertical: 10, 
+    height: 50,
+    paddingHorizontal: 10,
+    paddingVertical: 5, 
     marginBottom: 12,
   },
   titletext: {
