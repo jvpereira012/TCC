@@ -1,55 +1,75 @@
-import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
-import React from 'react';
+import { KeyboardAvoidingView, ScrollView, Platform, Text, View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackTypes } from '../../routes';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Login() {
   const navigation = useNavigation<StackTypes>();
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.containerHeader}>
-        <Image 
-          source={require('../../../assets/icon.png')}
-          style={styles.imgContainer}
-        />
-        <Text style={styles.titletext}>Login</Text>
-        <Text>ENTRE NA PLATAFORMA PARA CONTINUAR</Text>
-      </View>
-      <View style={styles.formView}>
-          <Text style={styles.textLabel}>EMAIL*</Text>
-          <TextInput 
-            style={styles.textInput}
-            placeholder='Insira seu email'
-        />
-        <Text style={styles.textLabel}>SENHA*</Text>
-        <TextInput 
-          style={styles.textInput}
-          placeholder='Insira sua senha'
-          secureTextEntry={true}
-          
-        />
-        <TouchableOpacity style={styles.buttonInput} onPress={() => {navigation.navigate('Home')}}>
-          <Text style={{ color: '#fff' }}>ENTRAR</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.infButtons}>
-        <TouchableOpacity>
-          <Text style={styles.infButtonsText}>Esqueceu a sua senha?</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => { navigation.navigate('Cadastro') }}>
-          <Text style={styles.infButtonsText}>Não tem uma conta? CADASTRE-SE</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.buttonIcon}>
-          <Image 
-            source={require('../../../assets/iconeseimagens_app/icon3.png')}
-            style={{ width: 45, height: 45 }}
-          />
-        </TouchableOpacity>
-      </View>
-    </View>
+    <KeyboardAvoidingView 
+      style={{ flex: 1 }} 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          <View style={styles.containerHeader}>
+            <Image 
+              source={require('../../../assets/icon.png')}
+              style={styles.imgContainer}
+            />
+            <Text style={styles.titletext}>Login</Text>
+            <Text>ENTRE NA PLATAFORMA PARA CONTINUAR</Text>
+          </View>
+          <View style={styles.formView}>
+            <Text style={styles.textLabel}>EMAIL*</Text>
+            <TextInput 
+              style={styles.textInput}
+              placeholder='Insira seu email'
+              keyboardType='email-address'
+            />
+            <Text style={styles.textLabel}>SENHA*</Text>
+            <View style={styles.passwordContainer}>
+              <TextInput 
+                style={styles.textInputPassword}
+                placeholder='Insira sua senha'
+                secureTextEntry={secureTextEntry}
+              />
+              <TouchableOpacity
+                style={styles.showPasswordButton}
+                onPress={() => setSecureTextEntry(!secureTextEntry)}
+              >
+                <Ionicons 
+                  name={secureTextEntry ? 'eye-off' : 'eye'} 
+                  size={24} 
+                  color='gray' 
+                />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity 
+              style={styles.buttonInput} 
+              onPress={() => {navigation.navigate('Home')}}>
+              <Text style={{ color: '#fff' }}>ENTRAR</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.infButtons}>
+            <TouchableOpacity>
+              <Text style={styles.infButtonsText}>Esqueceu a sua senha?</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { navigation.navigate('Cadastro') }}>
+              <Text style={styles.infButtonsText}>Não tem uma conta? CADASTRE-SE</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonIcon}>
+              <Image 
+                source={require('../../../assets/iconeseimagens_app/icon3.png')}
+                style={{ width: 45, height: 45 }}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -78,11 +98,11 @@ const styles = StyleSheet.create({
   },
   textLabel: {
     fontSize: 14,
-  marginBottom: 5, 
-  width: '100%', 
-  maxWidth: 250, 
-  textAlign: 'left', 
-  alignSelf: 'center', 
+    marginBottom: 5, 
+    width: '100%', 
+    maxWidth: 250, 
+    textAlign: 'left', 
+    alignSelf: 'center', 
   },
   buttonInput: {
     fontSize: 12.1,
@@ -105,6 +125,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5, 
     marginBottom: 12,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    width: '75%',
+    height: 50,
+    marginBottom: 12,
+  },
+  textInputPassword: {
+    flex: 1,
+    fontSize: 10.1,
+    paddingHorizontal: 10,
+    paddingVertical: 5, 
+  },
+  showPasswordButton: {
+    paddingHorizontal: 10,
   },
   titletext: {
     fontSize: 24.2,

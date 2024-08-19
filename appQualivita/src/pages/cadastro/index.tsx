@@ -1,57 +1,78 @@
-import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
-import React from 'react';
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackTypes } from '../../routes';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function Login() {
+export default function Cadastro() {
   const navigation = useNavigation<StackTypes>();
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   return (
-
-    <View style={styles.container}>
-      <View style={styles.containerHeader}>
-        <Image 
-          source={require('../../../assets/icon.png')}
-          style={styles.imgContainer}
-        />
-        <Text style={styles.titletext}>Cadastro</Text>
-        <Text style={{marginBottom: 40}}>INSIRA SUAS INFORMAÇÕES NOS CAMPOS ABAIXO</Text>
-      </View>
-      <View style={styles.formView}>
-        <Text style={styles.textLabel}>EMAIL*</Text>
-        <TextInput 
-          style={styles.textInput}
-          placeholder='Insira seu email'
-        />
-        <Text style={styles.textLabel}> Crie uma SENHA*</Text>
-        <TextInput 
-          style={styles.textInput}
-          placeholder='Crie uma senha'
-          secureTextEntry={true}
-        />
-        <Text style={styles.textLabel}>SENHA*</Text>
-        <TextInput 
-          style={styles.textInput}
-          placeholder='Confirme sua senha'
-          secureTextEntry={true}
-        />
-        <Text style={styles.textLabel}>DATA DE NASCIMENTO*</Text>
-        <TextInput 
-          style={styles.textInput}
-          placeholder='Insira sua data de nascimento'
-          dataDetectorTypes={'calendarEvent'}
-        />
-      
-        <TouchableOpacity style={styles.buttonInput} onPress={() => {navigation.navigate('Login')}}>
-          <Text style={{ color: '#fff' }}>CADASTRAR</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.infButtons}>
-        <TouchableOpacity onPress={() => { navigation.navigate('Login') }}>
-          <Text style={styles.infButtonsText}>Já está registrado? Faça Login</Text>
-        </TouchableOpacity>        
-      </View>
-    </View>
+    <KeyboardAvoidingView 
+      style={{ flex: 1 }} 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          <View style={styles.containerHeader}>
+            <Image 
+              source={require('../../../assets/icon.png')}
+              style={styles.imgContainer}
+            />
+            <Text style={styles.titletext}>Cadastro</Text>
+            <Text style={{ marginBottom: 40 }}>Insira suas informações nos campos abaixo</Text>
+          </View>
+          <View style={styles.formView}>
+            <Text style={styles.textLabel}>EMAIL*</Text>
+            <TextInput 
+              style={styles.textInput}
+              keyboardType='email-address'
+              placeholder='Insira seu email'
+            />
+            <Text style={styles.textLabel}>Crie uma senha*</Text>
+            <View style={styles.passwordContainer}>
+              <TextInput 
+                style={styles.textInputPassword1}
+                placeholder='Crie uma senha'
+                secureTextEntry={secureTextEntry}
+              />
+            </View>
+            <Text style={styles.textLabel}>Confirme sua senha*</Text>
+            <View style={styles.passwordContainer}>
+              <TextInput 
+                style={styles.textInputPassword2}
+                placeholder='Confirme sua senha'
+                secureTextEntry={secureTextEntry}
+              />
+              <TouchableOpacity
+                style={styles.showPasswordButton}
+                onPress={() => setSecureTextEntry(!secureTextEntry)}
+              >
+                <Ionicons 
+                  name={secureTextEntry? 'eye-off' : 'eye'} 
+                  size={24} 
+                  color='gray' 
+                />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.textLabel}>Data de nascimento*</Text>
+            <TextInput 
+              style={styles.textInput}
+              placeholder='Insira sua data de nascimento'
+              dataDetectorTypes={'calendarEvent'}
+            />
+            <TouchableOpacity style={styles.buttonInput} onPress={() => { navigation.navigate('Login') }}>
+              <Text style={{ color: '#fff' }}>CADASTRAR</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.infButtons}>
+            <TouchableOpacity onPress={() => { navigation.navigate('Login') }}>
+              <Text style={styles.infButtonsText}>Já está registrado? Faça Login</Text>
+            </TouchableOpacity>        
+          </View>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -80,11 +101,11 @@ const styles = StyleSheet.create({
   },
   textLabel: {
     fontSize: 14,
-  marginBottom: 5, 
-  width: '100%', 
-  maxWidth: 250, 
-  textAlign: 'left', 
-  alignSelf: 'center', 
+    marginBottom: 5, 
+    width: '100%', 
+    maxWidth: 250, 
+    textAlign: 'left', 
+    alignSelf: 'center', 
   },
   buttonInput: {
     fontSize: 12.1,
@@ -99,7 +120,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10, 
   },
   textInput: {
-      fontSize: 10.1,
+    fontSize: 10.1,
     borderRadius: 15,
     backgroundColor: '#fff',
     width: '75%',
@@ -107,6 +128,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5, 
     marginBottom: 12,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    width: '75%',
+    height: 50,
+    marginBottom: 12,
+  },
+  textInputPassword1: {
+    flex: 1,
+    fontSize: 10.1,
+    paddingHorizontal: 10,
+    paddingVertical: 5, 
+  },
+  textInputPassword2: {
+    flex: 1,
+    fontSize: 10.1,
+    paddingHorizontal: 10,
+    paddingVertical: 5, 
+  },
+  showPasswordButton: {
+    paddingHorizontal: 10,
   },
   titletext: {
     fontSize: 24.2,
