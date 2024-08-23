@@ -49,7 +49,7 @@ export default function Login() {
             </View>
             <TouchableOpacity 
               style={styles.buttonInput} 
-              onPress={() => {navigation.navigate('Home')}}>
+              onPress={() => {navigation.navigate('TabNavigator')}}>
               <Text style={{ color: '#fff' }}>ENTRAR</Text>
             </TouchableOpacity>
           </View>
