@@ -11,11 +11,9 @@ import Cadastro from "../pages/cadastro";
 import Home from "../pages/home";
 import Configuracoes from "../pages/configuracoes";
 
-// Definição das pilhas de navegação
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// Definição dos tipos de navegação
 type StackNavigation = {
   Boasvindas: undefined;
   Boasvindas2: undefined;
@@ -30,11 +28,9 @@ type TabNavigation = {
   Configuracoes: undefined;
 }
 
-// Exportação dos tipos de navegação
 export type StackTypes = NativeStackNavigationProp<StackNavigation>;
 export type TabTypes = BottomTabNavigationProp<TabNavigation>;
 
-// Função TabNavigator movida para cima
 export function TabNavigator() {
   return (
     <Tab.Navigator screenOptions={{
