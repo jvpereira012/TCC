@@ -1,7 +1,8 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator, BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import AntDesign from '@expo/vector-icons/AntDesign';
+import Feather from '@expo/vector-icons/Feather';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import Boasvindas from '../pages/boas-vindas';
 import Boasvindas2 from '../pages/boas-vindas2';
@@ -9,7 +10,7 @@ import Boasvindas3 from '../pages/boas-vindas3';
 import Login from "../pages/login";
 import Cadastro from "../pages/cadastro";
 import Home from "../pages/home";
-import Configuracoes from "../pages/configuracoes";
+import Informacoes from "../pages/informacoes";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -25,7 +26,7 @@ type StackNavigation = {
 
 type TabNavigation = {
   Home: undefined;
-  Configuracoes: undefined;
+  Informacoes: undefined;
 }
 
 export type StackTypes = NativeStackNavigationProp<StackNavigation>;
@@ -39,27 +40,27 @@ export function TabNavigator() {
         borderTopColor: 'transparent',
         paddingBottom: 2,
         paddingTop: 5,
-        height: 45
+        height: 50
       },
       tabBarActiveTintColor: '#efebef',
     }}>
       <Tab.Screen
-        name="Home"
+        name="MAPA"
         component={Home}
         options={{ 
           headerShown: false,
             tabBarIcon: ({color,size}) => (
-              <AntDesign name="enviroment" size={size} color={color}/>
+              <Feather name="map-pin" size={size} color={color}/>
             )
         }}
       />
       <Tab.Screen
-        name="Configuracoes"
-        component={Configuracoes}
+        name="INFORMAÇÕES"
+        component={Informacoes}
         options={{ 
           headerShown: false,
             tabBarIcon:({color,size}) => (
-              <AntDesign name="setting" size={size} color={color}/>
+              <MaterialCommunityIcons name="information-variant" size={size} color={color} />
             )
         }}
       />
