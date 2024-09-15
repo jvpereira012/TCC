@@ -16,11 +16,11 @@ export default function Login() {
         <View style={styles.container}>
           <View style={styles.containerHeader}>
             <Image 
-              source={require('../../../assets/icon.png')}
+              source={require('../../../assets/iconnoname.png')}
               style={styles.imgContainer}
             />
-            <Text style={styles.titletext}>Login</Text>
-            <Text>ENTRE NA PLATAFORMA PARA CONTINUAR</Text>
+            <Text style={styles.titletext}>LOGIN</Text>
+            <Text style={styles.subtitle}>ENTRE NA PLATAFORMA PARA CONTINUAR</Text>
           </View>
           <View style={styles.formView}>
             <Text style={styles.textLabel}>EMAIL*</Text>
@@ -50,7 +50,7 @@ export default function Login() {
             <TouchableOpacity 
               style={styles.buttonInput} 
               onPress={() => {navigation.navigate('TabNavigator')}}>
-              <Text style={{ color: '#fff' }}>ENTRAR</Text>
+              <Text style={{ color: '#fff', fontFamily:'Poppins-Bold' }}>ENTRAR</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.infButtons}>
@@ -85,20 +85,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#6cd7a3',
   },
   containerHeader: {
-    alignItems: 'center',
+    flexDirection: 'column', 
+    alignItems: 'center', 
     justifyContent: 'center',
-    marginTop: '10%',
+    marginTop: '-8%',
     marginBottom: '8%',
-    paddingStart: '5%',
   },
   imgContainer: {
     resizeMode: 'contain',
-    width: 200,
-    height: 200,
+    width: 220,
+    height: 270,
   },
   textLabel: {
-    fontSize: 14,
-    marginBottom: 5, 
+    fontFamily: 'Poppins-Bold',
+    fontSize: 13,
+    marginBottom: 3, 
     width: '100%', 
     maxWidth: 250, 
     textAlign: 'left', 
@@ -108,8 +109,8 @@ const styles = StyleSheet.create({
     fontSize: 12.1,
     textAlign: 'center',
     borderRadius: 8,
+    marginTop:10,
     color: '#fff',
-    fontWeight: 'bold',
     backgroundColor: '#00Bf63',
     marginBottom: 8,
     width: '75%',
@@ -145,9 +146,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   titletext: {
-    fontSize: 24.2,
-    fontWeight: 'bold',
-    marginBottom: 10, 
+    fontSize: 45,
+    fontFamily:'Lovelo',
+    marginBottom: 10,
+    marginTop: -30,
+    textAlign: 'center', 
+  },
+  subtitle: {
+    fontFamily: 'Poppins',
+    textAlign: 'center',
+    marginTop: 5,
+    fontSize: 14,
+    width: 200
   },
   buttonIcon: {
     paddingVertical: 10,
@@ -162,8 +172,8 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   infButtonsText: {
+    fontFamily:'Poppins-SemiBold',
     fontSize: 12,
     textAlign: 'center',
-    fontWeight: 'bold',
   }
 });

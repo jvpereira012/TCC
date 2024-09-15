@@ -11,6 +11,7 @@ import Login from "../pages/login";
 import Cadastro from "../pages/cadastro";
 import Home from "../pages/home";
 import Informacoes from "../pages/informacoes";
+import Graficos from "../pages/grafico";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,6 +23,7 @@ type StackNavigation = {
   Login: undefined;
   Cadastro: undefined;
   TabNavigator: undefined; 
+  Graficos: undefined;
 }
 
 type TabNavigation = {
@@ -50,8 +52,9 @@ export function TabNavigator() {
         options={{ 
           headerShown: false,
             tabBarIcon: ({color,size}) => (
-              <Feather name="map-pin" size={size} color={color}/>
-            )
+              <Feather name="map-pin" size={size} color={'#efebef'}/>
+            ),
+            tabBarLabelStyle: { fontFamily: 'Lovelo', fontSize: 10, color:'#efebef'},
         }}
       />
       <Tab.Screen
@@ -60,8 +63,9 @@ export function TabNavigator() {
         options={{ 
           headerShown: false,
             tabBarIcon:({color,size}) => (
-              <MaterialCommunityIcons name="information-variant" size={size} color={color} />
-            )
+              <MaterialCommunityIcons name="information-variant" size={size} color={'#efebef'} />
+            ),
+            tabBarLabelStyle: { fontFamily: 'Lovelo', fontSize: 10, color:'#efebef'},
         }}
       />
     </Tab.Navigator>
@@ -100,6 +104,11 @@ export default function Routes() {
       <Stack.Screen
         name="TabNavigator"
         component={TabNavigator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Graficos"
+        component={Graficos}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

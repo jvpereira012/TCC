@@ -3,6 +3,7 @@ import * as Animation from 'react-native-animatable';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackTypes } from '../../routes';
+import AntDesign from '@expo/vector-icons/AntDesign';
 export default function Boasvindas2() {
     const navigation = useNavigation<StackTypes>();
     return (
@@ -19,17 +20,17 @@ export default function Boasvindas2() {
                 <Text style={styles.subtitle}>
                     Saiba como a qualidade do ar interfere na sua vida
                 </Text>
-            </View>
-            <View style={styles.containerButton}>
-                <TouchableOpacity style={styles.button} onPress={
-                    () => navigation.navigate('Boasvindas3')
-                }>
+                </View>
+            <View style={styles.containerButtons}>
+                <TouchableOpacity onPress={() => navigation.navigate('Boasvindas')}>
                     <View style={styles.buttonView}>
-                        <Image 
-                            source={require('../../../assets/iconeseimagens_app/seta.png')}
-                            style={{width: 64, height: 64,}}
-                            resizeMode='contain'
-                        />
+                        <AntDesign name="arrowleft" size={60} color="white" />
+                        <Text style={styles.buttonText}>VOLTAR</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Boasvindas3')}>
+                    <View style={styles.buttonView}>
+                        <AntDesign name="arrowright" size={60} color="white" />
                         <Text style={styles.buttonText}>PRÓXIMO</Text>
                     </View>
                 </TouchableOpacity>
@@ -37,32 +38,32 @@ export default function Boasvindas2() {
         </View>
     );
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#00bf63',
         padding: 30,
     },
-    containerButton: {
-        flex: 1,
-        backgroundColor: '#00bf63',
-        alignItems: 'flex-end',
-        justifyContent: 'flex-end',
-        paddingBottom: 20,
-        paddingRight: 20,
+    containerButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center', 
+        paddingHorizontal: 1, 
+        marginTop: 'auto', 
+        width: '101%', 
     },
     title: {
+        marginTop: 20,
         textAlign: 'center',
-        fontWeight: 'bold',
+        fontFamily: 'Lovelo',
         fontSize: 32.5,
         color: '#fff',
-        marginBottom: 6,
+        marginBottom: 10,
         margin: 3,
     },
     subtitle: {
+        fontFamily:'Poppins-SemiBold',
         textAlign: 'center',
-        fontWeight: 'bold',
         fontSize: 24.1,
         color: '#fff',
         margin: 4,
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonText: {
-        fontWeight: 'bold',
+        fontFamily:'Poppins-Bold',
         fontSize: 14.4,
         color: '#fff',
         marginTop: 5,

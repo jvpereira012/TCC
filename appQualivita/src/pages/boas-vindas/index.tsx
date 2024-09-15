@@ -2,6 +2,8 @@ import { Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StackTypes } from '../../routes';
+import AntDesign from '@expo/vector-icons/AntDesign';
+
 
 
 export default function Boasvindas() {
@@ -19,7 +21,7 @@ export default function Boasvindas() {
             </View>
             <View>
                 <Text style={styles.subtitle}>
-                    TENHA ACESSO AOS DADOS DE NOSSOS SENSORES
+                    Tenha acesso aos dados de nossos sensores
                 </Text>
             </View>
             <View style={styles.containerButton}>
@@ -28,11 +30,7 @@ export default function Boasvindas() {
                 onPress={() => navigation.navigate('Boasvindas2')}
                 >
                     <View style={styles.buttonView}>
-                        <Image 
-                            source={require('../../../assets/iconeseimagens_app/seta.png')}
-                            style={{width: 64, height: 64,}}
-                            resizeMode='contain'
-                        />
+                        <AntDesign name="arrowright" size={60} color="white" />                 
                         <Text style={styles.buttonText}>PRÓXIMO</Text>
                     </View>
                 </TouchableOpacity>
@@ -52,20 +50,21 @@ const styles = StyleSheet.create({
         backgroundColor: '#00bf63',
         alignItems: 'flex-end',
         justifyContent: 'flex-end',
-        paddingBottom: 20,
-        paddingRight: 20,
+        marginTop: 'auto', 
+        width: '101%', 
     },
     title: {
         textAlign: 'center',
-        fontWeight: 'bold',
+        fontFamily: 'Lovelo',
         fontSize: 32.5,
         color: '#fff',
-        marginBottom: 6,
+        marginBottom: 10,
+        marginTop:20,
         margin: 3,
     },
     subtitle: {
         textAlign: 'center',
-        fontWeight: 'bold',
+        fontFamily:'Poppins-SemiBold',
         fontSize: 24.1,
         color: '#fff',
         margin: 4,
@@ -79,7 +78,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonText: {
-        fontWeight: 'bold',
+        fontFamily:'Poppins-Bold',
         fontSize: 14.4,
         color: '#fff',
         marginTop: 5,

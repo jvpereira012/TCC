@@ -1,11 +1,17 @@
-import { Text, StyleSheet, SafeAreaView } from 'react-native';
+import { Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import React from 'react';
+import { StackTypes } from '../../routes';
+import { useNavigation } from '@react-navigation/native';
 import { View } from 'react-native-animatable';
+
 export default function Informacoes() {
+  const navigation = useNavigation<StackTypes>();
+
     return (
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>DADOS DOS SENSORES</Text>
 
+        <TouchableOpacity onPress={() => { navigation.navigate('Graficos') }}>
         <View style={styles.dadosBox}>
     <Text style={styles.textoPrincipal}>Cidade: São José dos Campos</Text>
     <Text style={styles.textoSecundario}>Bairro: Santa Rosa</Text>
@@ -16,9 +22,9 @@ export default function Informacoes() {
       <Text style={styles.textoCondicao}>Condição do ar: boa</Text>
     </View>
   </View>
+  </TouchableOpacity>
       </SafeAreaView>
     );
-    
 }
 
 const styles = StyleSheet.create({
@@ -30,10 +36,11 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontFamily: 'Lovelo',
     fontSize: 20,
     color: '#00bf63',
-    marginBottom: 50,
+    marginTop: 25,
+    marginBottom: 45,
     margin: 17 ,
 },
   dadosBox: {
@@ -45,10 +52,11 @@ const styles = StyleSheet.create({
 },
   textoPrincipal: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-SemiBold'
 },
   textoSecundario: {
     fontSize: 14,
+    fontFamily: 'Poppins',
     marginVertical: 2,
 },
   dadosSensor: {
@@ -57,7 +65,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
 },
   textoSensor: {
-    fontSize: 14,
+    fontSize: 12,
+    fontFamily: 'Poppins',
     color: '#4CAF50',
 },
   textoCondicao: {

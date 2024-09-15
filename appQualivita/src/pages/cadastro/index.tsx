@@ -16,11 +16,10 @@ export default function Cadastro() {
         <View style={styles.container}>
           <View style={styles.containerHeader}>
             <Image 
-              source={require('../../../assets/icon.png')}
+              source={require('../../../assets/iconnoname.png')}
               style={styles.imgContainer}
             />
-            <Text style={styles.titletext}>Cadastro</Text>
-            <Text style={{ marginBottom: 40 }}>Insira suas informações nos campos abaixo</Text>
+            <Text style={styles.titletext}>Crie sua conta</Text>
           </View>
           <View style={styles.formView}>
             <Text style={styles.textLabel}>EMAIL*</Text>
@@ -62,7 +61,7 @@ export default function Cadastro() {
               dataDetectorTypes={'calendarEvent'}
             />
             <TouchableOpacity style={styles.buttonInput} onPress={() => { navigation.navigate('Login') }}>
-              <Text style={{ color: '#fff' }}>CADASTRAR</Text>
+              <Text style={{ color: '#fff', fontFamily:'Poppins-Bold' }}>CADASTRAR</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.infButtons}>
@@ -88,20 +87,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#6cd7a3',
   },
   containerHeader: {
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: '10%',
+    marginTop: '-3%',
     marginBottom: '8%',
-    paddingStart: '5%',
   },
   imgContainer: {
     resizeMode: 'contain',
-    width: 200,
+    marginBottom: -2,
+    width: 170,
     height: 200,
   },
   textLabel: {
     fontSize: 14,
-    marginBottom: 5, 
+    fontFamily:'Poppins-Bold',
+    marginBottom: 3, 
     width: '100%', 
     maxWidth: 250, 
     textAlign: 'left', 
@@ -112,9 +113,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     borderRadius: 8,
     color: '#fff',
-    fontWeight: 'bold',
     backgroundColor: '#00Bf63',
-    marginBottom: 8,
+    marginTop: 10,
+    marginBottom: -30,
     width: '75%',
     alignItems: 'center',
     paddingVertical: 10, 
@@ -154,21 +155,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   titletext: {
-    fontSize: 24.2,
-    fontWeight: 'bold',
-    marginBottom: 10, 
+    fontSize: 30,
+    fontFamily: 'Lovelo',
+    marginBottom: 5, 
+    textAlign: 'center',
   },
   infButtons: {
     paddingVertical: '15%', 
     alignItems: 'center',
     fontSize: 12,
     textAlign: 'center',
-    fontWeight: 'bold',
     marginBottom: 25,
   },
   infButtonsText: {
     fontSize: 12,
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontFamily:'Poppins-SemiBold'
   }
 });
