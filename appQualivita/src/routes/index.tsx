@@ -20,8 +20,8 @@ type StackNavigation = {
   Boasvindas: undefined;
   Boasvindas2: undefined;
   Boasvindas3: undefined;
-  Login: undefined;
-  Cadastro: undefined;
+  Login:{ email: string; senha: string };
+  Cadastro: { nome: string; email: string; senha: string; datanasc: string };
   TabNavigator: undefined; 
   Graficos: undefined;
 }
