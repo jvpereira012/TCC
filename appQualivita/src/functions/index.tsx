@@ -1,4 +1,4 @@
-// authService.ts
+
 export async function registroUsuario(nome: string, email: string, senha: string, datanasc: string) {
     try {
       const response = await fetch('http://seu-servidor.com/cadastro.php', {

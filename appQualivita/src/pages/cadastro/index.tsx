@@ -17,20 +17,28 @@ export default function Cadastro() {
     return `${year}-${month}-${day}`;  // Formato para MySQL YYYY-MM-DD
   };
 
+  const [confirmarSenha, setConfirmarSenha] = useState('');
+
   const handleCadastro = async () => {
     try {
-      if (!nomeUsuario || !userEmail || !userSenha || !userDataNasc) {
+      if (!nomeUsuario || !userEmail || !userSenha || !confirmarSenha || !userDataNasc) {
         Alert.alert('Erro', 'Por favor, preencha todos os campos.');
         return;
       }
+      if (userSenha !== confirmarSenha) {
+        Alert.alert('Erro', 'As senhas não correspondem.');
+        return;
+      }
+      
       const formattedDate = formatDate(userDataNasc); // Converte a data
-      const response = await registroUsuario(nomeUsuario, userEmail, userSenha, userDataNasc);
+      const response = await registroUsuario(nomeUsuario, userEmail, userSenha, formattedDate); // Envia a data formatada
       Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
       navigation.navigate('Login', { email: userEmail, senha: userSenha });
     } catch (error) {
       Alert.alert('Erro', 'Falha ao cadastrar usuário. Tente novamente.');
     }
   };
+  
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
