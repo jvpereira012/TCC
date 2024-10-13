@@ -70,7 +70,7 @@ export default function Login() {
             <TouchableOpacity>
               <Text style={styles.infButtonsText}>Esqueceu a sua senha?</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { navigation.navigate('Cadastro') }}>
+            <TouchableOpacity onPress={() => { navigation.navigate('Cadastro'),{nome: null, email: email, senha: senha, datanasc: null}}}>
               <Text style={styles.infButtonsText}>Não tem uma conta? CADASTRE-SE</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonIcon}>
