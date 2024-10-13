@@ -53,7 +53,15 @@ export default function Cadastro() {
             <Text style={styles.titletext}>Crie sua conta</Text>
           </View>
           <View style={styles.formView}>
-            <Text style={styles.textLabel}>EMAIL*</Text>
+            <Text style={styles.textLabel}>Nome de usuário*</Text>
+            <TextInput
+              style={styles.textInput}
+              keyboardType='default'
+              placeholder='Insira seu nome'
+              onChangeText={setNomeUsuario}
+              value={nomeUsuario}
+            />
+            <Text style={styles.textLabel}>Email*</Text>
             <TextInput
               style={styles.textInput}
               keyboardType='email-address'
@@ -104,7 +112,7 @@ export default function Cadastro() {
             </TouchableOpacity>
           </View>
           <View style={styles.infButtons}>
-            <TouchableOpacity onPress={() => { navigation.navigate('Login') }}>
+            <TouchableOpacity onPress={() => { navigation.navigate('Login',{ email: userEmail, senha: userSenha }) }}>
               <Text style={styles.infButtonsText}>Já está registrado? Faça Login</Text>
             </TouchableOpacity>
           </View>
