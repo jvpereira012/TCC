@@ -30,14 +30,22 @@ export default function Cadastro() {
         return;
       }
       
-      const formattedDate = formatDate(userDataNasc); // Converte a data
-      const response = await registroUsuario(nomeUsuario, userEmail, userSenha, formattedDate); // Envia a data formatada
-      Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
-      navigation.navigate('Login', { email: userEmail, senha: userSenha });
+      const formattedDate = formatDate(userDataNasc);
+      const response = await registroUsuario(nomeUsuario, userEmail, userSenha, formattedDate);
+      
+      // Verifica a resposta do servidor
+      if (response.success) {
+        Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
+        navigation.navigate('Login', { email: userEmail, senha: userSenha });
+      } else {
+        Alert.alert('Erro', response.message);
+      }
+      
     } catch (error) {
       Alert.alert('Erro', 'Falha ao cadastrar usuário. Tente novamente.');
     }
   };
+  
   
   return (
     <KeyboardAvoidingView
