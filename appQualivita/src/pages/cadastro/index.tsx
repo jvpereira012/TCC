@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackTypes } from '../../routes';
 import { Ionicons } from '@expo/vector-icons';
 import { registroUsuario } from '../../functions'; // Importa a função de cadastro
+
 export default function Cadastro() {
   const navigation = useNavigation<StackTypes>();
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -12,12 +13,11 @@ export default function Cadastro() {
   const [userDataNasc, setDataNasc] = useState('');
   const [userSenha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
-  
+
   const formatDate = (dateString: string) => {
     const [day, month, year] = dateString.split('/');
-    return `${year}-${month}-${day}`;  // Formato para MySQL YYYY-MM-DD
+    return `${year}-${month}-${day}`; // Formato para MySQL YYYY-MM-DD
   };
-
 
   const handleCadastro = async () => {
     try {
@@ -29,10 +29,16 @@ export default function Cadastro() {
         Alert.alert('Erro', 'As senhas não correspondem.');
         return;
       }
-      
+      // Verifica se a data de nascimento está no formato correto
+      const dateParts = userDataNasc.split('/');
+      if (dateParts.length !== 3 || dateParts[0].length !== 2 || dateParts[1].length !== 2 || dateParts[2].length !== 4) {
+        Alert.alert('Erro', 'Insira uma data de nascimento válida no formato DD/MM/YYYY.');
+        return;
+      }
+
       const formattedDate = formatDate(userDataNasc);
       const response = await registroUsuario(nomeUsuario, userEmail, userSenha, formattedDate);
-      
+
       // Verifica a resposta do servidor
       if (response.success) {
         Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
@@ -40,13 +46,11 @@ export default function Cadastro() {
       } else {
         Alert.alert('Erro', response.message);
       }
-      
     } catch (error) {
       Alert.alert('Erro', 'Falha ao cadastrar usuário. Tente novamente.');
     }
   };
-  
-  
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -110,8 +114,8 @@ export default function Cadastro() {
             <Text style={styles.textLabel}>Data de nascimento*</Text>
             <TextInput
               style={styles.textInput}
-              placeholder='Insira sua data de nascimento'
-              dataDetectorTypes={'calendarEvent'}
+              placeholder='Insira sua data de nascimento (DD/MM/YYYY)'
+              keyboardType='default'
               onChangeText={setDataNasc}
               value={userDataNasc}
             />
@@ -120,7 +124,7 @@ export default function Cadastro() {
             </TouchableOpacity>
           </View>
           <View style={styles.infButtons}>
-            <TouchableOpacity onPress={() => { navigation.navigate('Login',{ email: userEmail, senha: userSenha }) }}>
+            <TouchableOpacity onPress={() => { navigation.navigate('Login', { email: userEmail, senha: userSenha }) }}>
               <Text style={styles.infButtonsText}>Já está registrado? Faça Login</Text>
             </TouchableOpacity>
           </View>
@@ -129,8 +133,6 @@ export default function Cadastro() {
     </KeyboardAvoidingView>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   formView: {
