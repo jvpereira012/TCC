@@ -1,55 +1,49 @@
 <?php
-    $servername = "qualivita_db.vpscronos0205.mysql.dbaas.com.br";
-    $username = "qualivita_db";
-    $password = "QualiVitaTCCEtec2024#";
-    $dbname = "qualivita_db";
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-    // Cria a conexão com o banco de dados
-    $conn = new mysqli($servername, $username, $password, $dbname);
+$json = file_get_contents('php://input');
+$data = json_decode($json);
 
-    // Verifica a conexão
-    if ($conn->connect_error) {
-        die(json_encode(array("success" => false, "message" => "Falha na conexão com o banco de dados.")));
-    }
+$servername = "qualivita_db.vpscronos0205.mysql.dbaas.com.br";
+$username = "qualivita_db";
+$password = "QualiVitaTCCEtec2024#";
+$dbname = "qualivita_db";
 
-    // Recebe dados JSON enviados pelo app React Native
-    $data = json_decode(file_get_contents("php://input"), true);
+$response = [];
+// Cria a conexão com o banco de dados
+$conn = new mysqli($servername, $username, $password, $dbname);
+mysqli_set_charset($conn,"utf8");
 
-    // Verifica se os campos obrigatórios estão preenchidos
-    if (isset($data['email'], $data['senha'])) {
-        $email = $data['email'];
-        $senha = $data['senha'];
+// Verifica a conexão
+if ($conn->connect_error) {
+    $response[] = ['msg' => "Erro: ".$conn->connect_error];
+} else {
+    // Prepara a consulta para buscar o usuário pelo email
+    $stmt = $conn->prepare("SELECT nome, senha FROM usuarios WHERE email = ?");
+    $stmt->bind_param("s", $data->email);
+    $stmt->execute();
+    $stmt->store_result();
 
-        // Consulta para buscar o usuário pelo e-mail
-        $sql = "SELECT * FROM usuarios WHERE email = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        // Verifica se o usuário existe
-        if ($result->num_rows > 0) {
-            $user = $result->fetch_assoc();
-            
-            // Verifica se a senha está correta
-            if (password_verify($senha, $user['senha'])) {
-                // Login bem-sucedido
-                echo json_encode(array("success" => true, "message" => "Login realizado com sucesso!", "user" => $user));
-            } else {
-                // Senha incorreta
-                echo json_encode(array("success" => false, "message" => "Senha incorreta."));
-            }
+    if ($stmt->num_rows > 0) {
+        $stmt->bind_result($nome, $senhaHash);
+        $stmt->fetch();
+        
+        // Verifica a senha
+        if (password_verify($data->senha, $senhaHash)) {
+            $response[] = ['msg' => "Login realizado com sucesso", 'nome' => $nome];
         } else {
-            // E-mail não encontrado
-            echo json_encode(array("success" => false, "message" => "Usuário não encontrado."));
+            $response[] = ['msg' => "Senha incorreta"];
         }
-
-        $stmt->close();
     } else {
-        // Dados incompletos
-        echo json_encode(array("success" => false, "message" => "Dados incompletos."));
+        $response[] = ['msg' => "Usuário não encontrado"];
     }
+    
+    $stmt->close();
+}
 
-    // Fecha a conexão com o banco de dados
-    $conn->close();
+// Fecha a conexão com o banco de dados
+$conn->close();
+echo json_encode(['informações' => $response]);
 ?>

@@ -114,7 +114,7 @@ export default function Cadastro() {
             <Text style={styles.textLabel}>Data de nascimento*</Text>
             <TextInput
               style={styles.textInput}
-              placeholder='Insira sua data de nascimento (DD/MM/YYYY)'
+              placeholder='Insira sua data de nascimento (Dia/Mes/Ano)'
               keyboardType='default'
               onChangeText={setDataNasc}
               value={userDataNasc}
