@@ -11,13 +11,13 @@ export default function Cadastro() {
   const [userEmail, setEmail] = useState('');
   const [userDataNasc, setDataNasc] = useState('');
   const [userSenha, setSenha] = useState('');
+  const [confirmarSenha, setConfirmarSenha] = useState('');
   
   const formatDate = (dateString: string) => {
     const [day, month, year] = dateString.split('/');
     return `${year}-${month}-${day}`;  // Formato para MySQL YYYY-MM-DD
   };
 
-  const [confirmarSenha, setConfirmarSenha] = useState('');
 
   const handleCadastro = async () => {
     try {
@@ -85,8 +85,8 @@ export default function Cadastro() {
                 style={styles.textInputPassword2}
                 placeholder='Confirme sua senha'
                 secureTextEntry={secureTextEntry}
-                onChangeText={setSenha}
-                value={userSenha}
+                onChangeText={setConfirmarSenha}
+                value={confirmarSenha}
               />
               <TouchableOpacity
                 style={styles.showPasswordButton}
