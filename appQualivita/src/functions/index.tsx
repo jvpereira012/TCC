@@ -1,7 +1,7 @@
 
 export async function registroUsuario(nome: string, email: string, senha: string, datanasc: string) {
     try {
-      const response = await fetch('http://seu-servidor.com/cadastro.php', {
+      const response = await fetch('https://qualivita.tccetecsjc.com.br/cadastro.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ export async function registroUsuario(nome: string, email: string, senha: string
   
   export async function loginUsuario(email: string, senha: string) {
     try {
-      const response = await fetch('http://seu-servidor.com/login.php', {
+      const response = await fetch('https://qualivita.tccetecsjc.com.br/login.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
