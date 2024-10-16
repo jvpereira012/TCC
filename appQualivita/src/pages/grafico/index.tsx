@@ -8,11 +8,10 @@ export default function Graficos() {
     const navigation = useNavigation<StackTypes>();
     return (
         <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Gráficos</Text>
+        <Text style={styles.title}>Histórico de dados</Text>
 
-        <TouchableOpacity onPress={() => { navigation.navigate('Graficos') }}>
         <View style={styles.dadosBox}>
-    <Text style={styles.textoPrincipal}>Cidade: São José dos Campos</Text>
+    <Text style={styles.textoPrincipal}>Id sensor: 1</Text>
     <Text style={styles.textoSecundario}>Bairro: Santa Rosa</Text>
     <Text style={styles.textoSecundario}>Rua: Hilda Rosa de Jesus</Text>
     <View style={styles.dadosSensor}>
@@ -21,7 +20,6 @@ export default function Graficos() {
       <Text style={styles.textoCondicao}>Condição do ar: boa</Text>
     </View>
   </View>
-  </TouchableOpacity>
       </SafeAreaView>
     );
 }
