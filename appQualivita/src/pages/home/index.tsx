@@ -6,7 +6,7 @@ import React, { useEffect, useState, useRef } from 'react';
 export default function Home() {
   const [localizacao, setLocalizacao] = useState<LocationObject | null>(null);
   const [showInfo, setShowInfo] = useState(false);
-  const translateYAnim = useRef(new Animated.Value(300)).current; // Começa fora da tela
+  const translateYAnim = useRef(new Animated.Value(300)).current; 
 
   async function requestLocationPermissions() {
     const { granted } = await requestForegroundPermissionsAsync();
@@ -33,7 +33,7 @@ export default function Home() {
   const toggleInfoBox = () => {
     setShowInfo(!showInfo);
     Animated.timing(translateYAnim, {
-      toValue: showInfo ? 300 : 60, // 60 é a nova altura da caixa
+      toValue: showInfo ? 300 : 60, 
       duration: 300,
       easing: Easing.ease,
       useNativeDriver: true,
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   infoBox: {
     position: 'absolute',
-    bottom: 80, // Deixando um espaço acima da parte inferior da tela
+    bottom: 80, 
     left: 20,
     right: 20,
     padding: 10,
