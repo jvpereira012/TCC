@@ -3,15 +3,19 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackTypes } from '../../routes';
 import { Ionicons } from '@expo/vector-icons';
+import { registroUsuario } from '../../functions'; // Importa a função
 
 export default function Cadastro() {
   const navigation = useNavigation<StackTypes>();
+  const [nome, setNome] = useState('');
+  const [senha1, setSenha1] = useState('');
+  const [senha2, setSenha2] = useState('');
+  const [datanasc, setDataNasc] = useState('');
+  const [email, setEmail] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   return (
-    <KeyboardAvoidingView 
-      style={{ flex: 1 }} 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.container}>
           <View style={styles.containerHeader}>
@@ -22,11 +26,21 @@ export default function Cadastro() {
             <Text style={styles.titletext}>Crie sua conta</Text>
           </View>
           <View style={styles.formView}>
-            <Text style={styles.textLabel}>EMAIL*</Text>
+            <Text style={styles.textLabel}>Nome de usuário*</Text>
+            <TextInput 
+              style={styles.textInput}
+              keyboardType='default'
+              placeholder='Insira seu nome'
+              onChangeText={setNome}
+              value={nome}
+            />
+            <Text style={styles.textLabel}>Email*</Text>
             <TextInput 
               style={styles.textInput}
               keyboardType='email-address'
               placeholder='Insira seu email'
+              onChangeText={setEmail}
+              value={email}
             />
             <Text style={styles.textLabel}>Crie uma senha*</Text>
             <View style={styles.passwordContainer}>
@@ -34,6 +48,8 @@ export default function Cadastro() {
                 style={styles.textInputPassword1}
                 placeholder='Crie uma senha'
                 secureTextEntry={secureTextEntry}
+                onChangeText={setSenha1}
+                value={senha1}
               />
             </View>
             <Text style={styles.textLabel}>Confirme sua senha*</Text>
@@ -42,26 +58,28 @@ export default function Cadastro() {
                 style={styles.textInputPassword2}
                 placeholder='Confirme sua senha'
                 secureTextEntry={secureTextEntry}
+                onChangeText={setSenha2}
+                value={senha2}
               />
               <TouchableOpacity
                 style={styles.showPasswordButton}
                 onPress={() => setSecureTextEntry(!secureTextEntry)}
               >
-                <Ionicons 
-                  name={secureTextEntry? 'eye-off' : 'eye'} 
-                  size={24} 
-                  color='gray' 
-                />
+                <Ionicons name={secureTextEntry? 'eye-off' : 'eye'} size={24} color='gray' />
               </TouchableOpacity>
             </View>
             <Text style={styles.textLabel}>Data de nascimento*</Text>
             <TextInput 
               style={styles.textInput}
-              placeholder='Insira sua data de nascimento'
-              dataDetectorTypes={'calendarEvent'}
+              placeholder='Insira sua data de nascimento (dd/mm/aaaa)'
+              onChangeText={setDataNasc}
+              value={datanasc}
             />
-            <TouchableOpacity style={styles.buttonInput} onPress={() => { navigation.navigate('Login') }}>
-              <Text style={{ color: '#fff', fontFamily:'Poppins-Bold' }}>CADASTRAR</Text>
+            <TouchableOpacity 
+              style={styles.buttonInput} 
+              onPress={() => registroUsuario(nome, email, senha1, senha2, datanasc, navigation)}
+            >
+              <Text style={{ color: '#fff', fontFamily: 'Poppins-Bold' }}>CADASTRAR</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.infButtons}>
@@ -74,6 +92,9 @@ export default function Cadastro() {
     </KeyboardAvoidingView>
   );
 }
+
+// Estilos (os mesmos que você já tem)
+
 
 const styles = StyleSheet.create({
   formView: {

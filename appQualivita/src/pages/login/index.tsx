@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, ScrollView, Platform, Text, View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, Platform, Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackTypes } from '../../routes';
@@ -6,7 +6,39 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function Login() {
   const navigation = useNavigation<StackTypes>();
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+
+  // Função para lidar com o login
+  const handleLogin = async () => {
+    if (!email || !senha) {
+      Alert.alert('Erro', 'Todos os campos são obrigatórios!');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost/testes/login.php', { // Substitua pelo URL correto
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, senha }),
+      });
+
+      const data = await response.json();
+
+      if (data.status === 'success') {
+        Alert.alert('Sucesso', data.message);
+        navigation.navigate('TabNavigator'); // Redireciona para a tela de navegação
+      } else {
+        Alert.alert('Erro', data.message);
+      }
+    } catch (error) {
+      Alert.alert('Erro', 'Ocorreu um erro ao fazer login.');
+      console.error(error);
+    }
+  };
 
   return (
     <KeyboardAvoidingView 
@@ -28,6 +60,8 @@ export default function Login() {
               style={styles.textInput}
               placeholder='Insira seu email'
               keyboardType='email-address'
+              value={email}
+              onChangeText={setEmail}
             />
             <Text style={styles.textLabel}>SENHA*</Text>
             <View style={styles.passwordContainer}>
@@ -35,6 +69,8 @@ export default function Login() {
                 style={styles.textInputPassword}
                 placeholder='Insira sua senha'
                 secureTextEntry={secureTextEntry}
+                value={senha}
+                onChangeText={setSenha}
               />
               <TouchableOpacity
                 style={styles.showPasswordButton}
@@ -49,7 +85,8 @@ export default function Login() {
             </View>
             <TouchableOpacity 
               style={styles.buttonInput} 
-              onPress={() => {navigation.navigate('TabNavigator')}}>
+              onPress={handleLogin} // Chama a função de login
+            >
               <Text style={{ color: '#fff', fontFamily:'Poppins-Bold' }}>ENTRAR</Text>
             </TouchableOpacity>
           </View>
@@ -72,6 +109,7 @@ export default function Login() {
     </KeyboardAvoidingView>
   );
 }
+
 
 const styles = StyleSheet.create({
   formView: {
