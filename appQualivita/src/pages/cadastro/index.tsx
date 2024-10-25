@@ -44,7 +44,7 @@ export default function Cadastro() {
     createUserWithEmailAndPassword(auth, userEmail, userSenha)
       .then((userCredential) => {
         const user = userCredential.user;
-
+        console.log("Usuário cadastrado",user);
         // Atualiza o perfil com o nome do usuário
         updateProfile(user, {
           displayName: nomeUsuario,
@@ -52,7 +52,7 @@ export default function Cadastro() {
           .then(() => {
             console.log("Perfil cadastrado com sucesso!");
             salvarDadosAdicionais(user.uid);
-            navigation.navigate('Login');
+            navigation.navigate('TabNavigator');
           })
           .catch((error) => {
             console.error("Erro ao atualizar o perfil:", error);
@@ -71,6 +71,7 @@ export default function Cadastro() {
         nome: nomeUsuario,
         dataNascimento: userDataNasc,
         email: userEmail,
+        senha: userSenha
       });
       console.log("Dados adicionais salvos no Firestore!");
       Alert.alert("Sucesso", "Cadastro realizado com sucesso!");

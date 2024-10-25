@@ -12,6 +12,7 @@ import Cadastro from "../pages/cadastro";
 import Home from "../pages/home";
 import Informacoes from "../pages/informacoes";
 import Graficos from "../pages/grafico";
+import { useState } from "react";
 
 
 const Stack = createStackNavigator();

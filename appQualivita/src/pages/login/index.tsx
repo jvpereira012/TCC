@@ -4,8 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackTypes } from '../../routes';
 import { Ionicons } from '@expo/vector-icons';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from '../../services/firebaseConfigs';
-import { doc, getDoc } from 'firebase/firestore';
+import { auth } from '../../services/firebaseConfigs';
 
 export default function Login() {
   const navigation = useNavigation<StackTypes>();
@@ -13,26 +12,20 @@ export default function Login() {
   const [senha, setSenha] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
-  const handleLogin = async () => {
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, senha);
-      const user = userCredential.user;
+  function handleLogin () {
+  signInWithEmailAndPassword(auth, email, senha)
+  .then((userCredential) => {
+    
+    const user = userCredential.user;
+    console.log("Usuário logado",user);
+    navigation.navigate('TabNavigator');
 
-      const userDocRef = doc(db, 'users', user.uid);
-      const userDocSnap = await getDoc(userDocRef);
-
-      if (userDocSnap.exists()) {
-        const userData = userDocSnap.data();
-        console.log(userData);
-        navigation.navigate('TabNavigator');
-      } else {
-        Alert.alert('Erro', 'Dados do usuário não encontrados.');
-      }
-    } catch (error) {
-      console.error('Erro no login:', error);
-      Alert.alert('Erro', 'Email ou senha incorretos.');
-    }
-  };
+  })
+  .catch((error) => {
+    Alert.alert("Erro de login",error.code);
+    Alert.alert("Erro de login",error.message);
+  });
+  }
 
   return (
     <KeyboardAvoidingView 

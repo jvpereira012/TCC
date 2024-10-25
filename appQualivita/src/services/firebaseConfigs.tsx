@@ -18,21 +18,23 @@ import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
 
-  apiKey: "AIzaSyDctD19IJnAHusySMEpqjBJ0qPOp_pq-js",
+  apiKey: "AIzaSyDl6FbYiKUOAYlvtwNjP2AbNAuwQDx_j-0",
 
-  authDomain: "qualivitadb.firebaseapp.com",
+  authDomain: "qualivitatcc.firebaseapp.com",
 
-  projectId: "qualivitadb",
+  projectId: "qualivitatcc",
 
-  storageBucket: "qualivitadb.appspot.com",
+  storageBucket: "qualivitatcc.appspot.com",
 
-  messagingSenderId: "150960184345",
+  messagingSenderId: "494553400374",
 
-  appId: "1:150960184345:web:d1ac802c7d1e7e6f031e88",
+  appId: "1:494553400374:web:84b87521b03971aea50497",
 
-  measurementId: "G-XVJH0D07NL"
+  measurementId: "G-H450852WX2"
 
 };
+
+
 
 
 // Initialize Firebase
