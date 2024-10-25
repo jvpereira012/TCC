@@ -1,11 +1,25 @@
-import { KeyboardAvoidingView, Platform, ScrollView, Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  Alert
+} from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackTypes } from '../../routes';
 import { Ionicons } from '@expo/vector-icons';
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth, db } from '../../services/firebaseConfigs'; 
-import { doc, setDoc } from 'firebase/firestore'; 
+import {
+  createUserWithEmailAndPassword,
+  updateProfile
+} from 'firebase/auth';
+import { auth, db } from '../../services/firebaseConfigs';
+import { doc, setDoc } from 'firebase/firestore';
 
 export default function Cadastro() {
   const navigation = useNavigation<StackTypes>();
@@ -17,6 +31,11 @@ export default function Cadastro() {
   const [confirmarSenha, setConfirmarSenha] = useState('');
 
   const fazercadastro = () => {
+    if (!nomeUsuario || !userEmail || !userDataNasc || !userSenha || !confirmarSenha) {
+      Alert.alert("Erro", "Por favor, preencha todos os campos!");
+      return;
+    }
+
     if (userSenha !== confirmarSenha) {
       Alert.alert("Erro", "As senhas não coincidem!");
       return;
@@ -31,22 +50,21 @@ export default function Cadastro() {
           displayName: nomeUsuario,
         })
           .then(() => {
-            console.log("Perfil atualizado com sucesso!");
-            // Salvar outros dados no Firestore (como data de nascimento)
+            console.log("Perfil cadastrado com sucesso!");
             salvarDadosAdicionais(user.uid);
+            navigation.navigate('Login');
           })
           .catch((error) => {
-            console.log("Erro ao atualizar o perfil:", error);
+            console.error("Erro ao atualizar o perfil:", error);
             Alert.alert("Erro", "Falha ao atualizar o perfil do usuário.");
           });
       })
       .catch((error) => {
-        console.log("Erro ao criar usuário:", error.message);
+        console.error("Erro ao criar usuário:", error.message);
         Alert.alert("Erro", error.message);
       });
   };
 
- 
   const salvarDadosAdicionais = async (userId: string) => {
     try {
       await setDoc(doc(db, "users", userId), {
@@ -58,7 +76,7 @@ export default function Cadastro() {
       Alert.alert("Sucesso", "Cadastro realizado com sucesso!");
       navigation.navigate('Login');
     } catch (error) {
-      console.log("Erro ao salvar dados adicionais no Firestore:", error);
+      console.error("Erro ao salvar dados adicionais no Firestore:", error);
       Alert.alert("Erro", "Falha ao salvar dados adicionais.");
     }
   };
@@ -114,8 +132,7 @@ export default function Cadastro() {
               />
               <TouchableOpacity
                 style={styles.showPasswordButton}
-                onPress={() => setSecureTextEntry(!secureTextEntry)}
-              >
+                onPress={() => setSecureTextEntry(!secureTextEntry)}>
                 <Ionicons
                   name={secureTextEntry ? 'eye-off' : 'eye'}
                   size={24}
