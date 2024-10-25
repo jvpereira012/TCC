@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackTypes } from '../../routes';
 import { Ionicons } from '@expo/vector-icons';
-import { registroUsuario } from '../../functions'; // Importa a função de cadastro
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, db } from '../../services/firebaseConfigs'; 
+import { doc, setDoc } from 'firebase/firestore'; 
 
 export default function Cadastro() {
   const navigation = useNavigation<StackTypes>();
@@ -14,40 +16,50 @@ export default function Cadastro() {
   const [userSenha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
 
-  const formatDate = (dateString: string) => {
-    const [day, month, year] = dateString.split('/');
-    return `${year}-${month}-${day}`; // Formato para MySQL YYYY-MM-DD
+  const fazercadastro = () => {
+    if (userSenha !== confirmarSenha) {
+      Alert.alert("Erro", "As senhas não coincidem!");
+      return;
+    }
+
+    createUserWithEmailAndPassword(auth, userEmail, userSenha)
+      .then((userCredential) => {
+        const user = userCredential.user;
+
+        // Atualiza o perfil com o nome do usuário
+        updateProfile(user, {
+          displayName: nomeUsuario,
+        })
+          .then(() => {
+            console.log("Perfil atualizado com sucesso!");
+            // Salvar outros dados no Firestore (como data de nascimento)
+            salvarDadosAdicionais(user.uid);
+          })
+          .catch((error) => {
+            console.log("Erro ao atualizar o perfil:", error);
+            Alert.alert("Erro", "Falha ao atualizar o perfil do usuário.");
+          });
+      })
+      .catch((error) => {
+        console.log("Erro ao criar usuário:", error.message);
+        Alert.alert("Erro", error.message);
+      });
   };
 
-  const handleCadastro = async () => {
+ 
+  const salvarDadosAdicionais = async (userId: string) => {
     try {
-      if (!nomeUsuario || !userEmail || !userSenha || !confirmarSenha || !userDataNasc) {
-        Alert.alert('Erro', 'Por favor, preencha todos os campos.');
-        return;
-      }
-      if (userSenha !== confirmarSenha) {
-        Alert.alert('Erro', 'As senhas não correspondem.');
-        return;
-      }
-      // Verifica se a data de nascimento está no formato correto
-      const dateParts = userDataNasc.split('/');
-      if (dateParts.length !== 3 || dateParts[0].length !== 2 || dateParts[1].length !== 2 || dateParts[2].length !== 4) {
-        Alert.alert('Erro', 'Insira uma data de nascimento válida no formato DD/MM/YYYY.');
-        return;
-      }
-
-      const formattedDate = formatDate(userDataNasc);
-      const response = await registroUsuario(nomeUsuario, userEmail, userSenha, formattedDate);
-
-      // Verifica a resposta do servidor
-      if (response.success) {
-        Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
-        navigation.navigate('Login', { email: userEmail, senha: userSenha });
-      } else {
-        Alert.alert('Erro', response.message);
-      }
+      await setDoc(doc(db, "users", userId), {
+        nome: nomeUsuario,
+        dataNascimento: userDataNasc,
+        email: userEmail,
+      });
+      console.log("Dados adicionais salvos no Firestore!");
+      Alert.alert("Sucesso", "Cadastro realizado com sucesso!");
+      navigation.navigate('Login');
     } catch (error) {
-      Alert.alert('Erro', 'Falha ao cadastrar usuário. Tente novamente.');
+      console.log("Erro ao salvar dados adicionais no Firestore:", error);
+      Alert.alert("Erro", "Falha ao salvar dados adicionais.");
     }
   };
 
@@ -114,17 +126,17 @@ export default function Cadastro() {
             <Text style={styles.textLabel}>Data de nascimento*</Text>
             <TextInput
               style={styles.textInput}
-              placeholder='Insira sua data de nascimento (Dia/Mes/Ano)'
+              placeholder='Insira sua data de nascimento (Dia/Mês/Ano)'
               keyboardType='default'
               onChangeText={setDataNasc}
               value={userDataNasc}
             />
-            <TouchableOpacity style={styles.buttonInput} onPress={handleCadastro}>
+            <TouchableOpacity style={styles.buttonInput} onPress={fazercadastro}>
               <Text style={{ color: '#fff', fontFamily: 'Poppins-Bold' }}>CADASTRAR</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.infButtons}>
-            <TouchableOpacity onPress={() => { navigation.navigate('Login', { email: userEmail, senha: userSenha }) }}>
+            <TouchableOpacity onPress={() => { navigation.navigate('Login') }}>
               <Text style={styles.infButtonsText}>Já está registrado? Faça Login</Text>
             </TouchableOpacity>
           </View>

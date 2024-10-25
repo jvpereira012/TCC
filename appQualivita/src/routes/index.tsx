@@ -13,6 +13,7 @@ import Home from "../pages/home";
 import Informacoes from "../pages/informacoes";
 import Graficos from "../pages/grafico";
 
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -20,9 +21,9 @@ type StackNavigation = {
   Boasvindas: undefined;
   Boasvindas2: undefined;
   Boasvindas3: undefined;
-  Login:{ email: string; senha: string };
-  Cadastro: { nome: string; email: string; senha: string; datanasc: string };
-  TabNavigator: undefined; 
+  Login: undefined;
+  Cadastro: undefined;
+  TabNavigator: undefined;
   Graficos: undefined;
 }
 
@@ -31,13 +32,15 @@ type TabNavigation = {
   Informacoes: undefined;
 }
 
+
+
 export type StackTypes = NativeStackNavigationProp<StackNavigation>;
 export type TabTypes = BottomTabNavigationProp<TabNavigation>;
 
 export function TabNavigator() {
   return (
     <Tab.Navigator screenOptions={{
-      tabBarStyle:{
+      tabBarStyle: {
         backgroundColor: '#00bf63',
         borderTopColor: 'transparent',
         paddingBottom: 2,
@@ -46,26 +49,27 @@ export function TabNavigator() {
       },
       tabBarActiveTintColor: '#efebef',
     }}>
+      
       <Tab.Screen
         name="MAPA"
         component={Home}
-        options={{ 
+        options={{
           headerShown: false,
-            tabBarIcon: ({color,size}) => (
-              <Feather name="map-pin" size={size} color={'#efebef'}/>
-            ),
-            tabBarLabelStyle: { fontFamily: 'Lovelo', fontSize: 10, color:'#efebef'},
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="map-pin" size={size} color={'#efebef'} />
+          ),
+          tabBarLabelStyle: { fontFamily: 'Lovelo', fontSize: 10, color: '#efebef' },
         }}
       />
       <Tab.Screen
         name="INFORMAÇÕES"
         component={Informacoes}
-        options={{ 
+        options={{
           headerShown: false,
-            tabBarIcon:({color,size}) => (
-              <MaterialCommunityIcons name="information-variant" size={size} color={'#efebef'} />
-            ),
-            tabBarLabelStyle: { fontFamily: 'Lovelo', fontSize: 10, color:'#efebef'},
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="information-variant" size={size} color={'#efebef'} />
+          ),
+          tabBarLabelStyle: { fontFamily: 'Lovelo', fontSize: 10, color: '#efebef' },
         }}
       />
     </Tab.Navigator>
@@ -92,13 +96,13 @@ export default function Routes() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Login"
-        component={Login}
+        name="Cadastro"
+        component={Cadastro}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Cadastro"
-        component={Cadastro}
+        name="Login"
+        component={Login}
         options={{ headerShown: false }}
       />
       <Stack.Screen
