@@ -1,12 +1,15 @@
-import { StyleSheet, SafeAreaView, View, Text, Image, TouchableOpacity, Animated, Easing } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Text, Image, TouchableWithoutFeedback, TouchableOpacity, Animated, Easing } from 'react-native';
 import { getCurrentPositionAsync, requestForegroundPermissionsAsync, LocationObject, watchPositionAsync, LocationAccuracy } from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
 import React, { useEffect, useState, useRef } from 'react';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function Home() {
   const [localizacao, setLocalizacao] = useState<LocationObject | null>(null);
+  const [mapType, setMapType] = useState<'standard' | 'satellite'>('standard');
   const [showInfo, setShowInfo] = useState(false);
-  const translateYAnim = useRef(new Animated.Value(300)).current; 
+  const translateYAnim = useRef(new Animated.Value(300)).current;
+  const mapRef = useRef<MapView>(null);
 
   async function requestLocationPermissions() {
     const { granted } = await requestForegroundPermissionsAsync();
@@ -33,51 +36,94 @@ export default function Home() {
   const toggleInfoBox = () => {
     setShowInfo(!showInfo);
     Animated.timing(translateYAnim, {
-      toValue: showInfo ? 300 : 60, 
+      toValue: showInfo ? 300 : 0, 
       duration: 300,
       easing: Easing.ease,
       useNativeDriver: true,
     }).start();
   };
 
+  const closeInfoBox = () => {
+    if (showInfo) {
+      setShowInfo(false);
+      Animated.timing(translateYAnim, {
+        toValue: 300,
+        duration: 300,
+        easing: Easing.ease,
+        useNativeDriver: true,
+      }).start();
+    }
+  };
+
+  const centerToMyLocation = () => {
+    if (localizacao && mapRef.current) {
+      mapRef.current.animateCamera({
+        center: {
+          latitude: localizacao.coords.latitude,
+          longitude: localizacao.coords.longitude,
+        },
+        zoom: 18, 
+      });
+    }
+  };
+
+  const toggleMapType = () => {
+    setMapType((prevType) => (prevType === 'standard' ? 'satellite' : 'standard'));
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
-      {
-        localizacao &&
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: localizacao.coords.latitude,
-            longitude: localizacao.coords.longitude,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005,
-          }}
-        >
-          <Marker
-            coordinate={{
+    <TouchableWithoutFeedback onPress={closeInfoBox}>
+      <SafeAreaView style={styles.container}>
+        {
+          localizacao &&
+          <MapView
+            ref={mapRef}
+            style={styles.map}
+            mapType={mapType}
+            initialRegion={{
               latitude: localizacao.coords.latitude,
               longitude: localizacao.coords.longitude,
+              latitudeDelta: 0.005,
+              longitudeDelta: 0.005,
             }}
-            onPress={toggleInfoBox}
           >
-            <Image
-              source={require('../../../assets/iconeseimagens_app/icon1.png')}
-              style={{ width: 25, height: 35, resizeMode: 'stretch' }}
-            />
-          </Marker>
-        </MapView>
-      }
+            <Marker
+              coordinate={{
+                latitude: localizacao.coords.latitude,
+                longitude: localizacao.coords.longitude,
+              }}
+              onPress={toggleInfoBox}
+            >
+              <Image
+                source={require('../../../assets/iconeseimagens_app/icon1.png')}
+                style={{ width: 25, height: 35, resizeMode: 'stretch' }}
+              />
+            </Marker>
+          </MapView>
+        }
 
-      <Animated.View style={[styles.infoBox, { transform: [{ translateY: translateYAnim }] }]}>
-        <Text style={styles.infoTitulo}>Informações do sensor</Text>
-        <Text style={styles.infoText}>Temperatura no ambiente: 26°</Text>
-        <Text style={styles.infoText}>umidade na área: 40%</Text>
-        <Text style={styles.infoText}>condição do ar: boa</Text>
-        <TouchableOpacity onPress={toggleInfoBox}>
-          <Text style={styles.closeButton}>Fechar</Text>
-        </TouchableOpacity>
-      </Animated.View>
-    </SafeAreaView>
+        <Animated.View style={[styles.infoBox, { transform: [{ translateY: translateYAnim }] }]}>
+          <Text style={styles.infoTitulo}>Informações do sensor</Text>
+          <Text style={styles.infoText}>Temperatura no ambiente: 26°C</Text>
+          <Text style={styles.infoText}>umidade na área: 40%</Text>
+          <Text style={styles.infoText}>condição do ar: boa</Text>
+        </Animated.View>
+
+        {}
+        {!showInfo && (
+          <TouchableOpacity style={styles.myLocationButton} onPress={centerToMyLocation}>
+            <Ionicons name="locate" size={24} color="#efebef" />
+          </TouchableOpacity>
+        )}
+
+        {}
+        {!showInfo && (  
+          <TouchableOpacity style={styles.mapTypeButton} onPress={toggleMapType}>
+            <Ionicons name="layers-sharp" size={24} color="#efebef" />
+          </TouchableOpacity>
+        )}
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -94,7 +140,7 @@ const styles = StyleSheet.create({
   },
   infoBox: {
     position: 'absolute',
-    bottom: 80, 
+    bottom: 20,  
     left: 20,
     right: 20,
     padding: 10,
@@ -115,9 +161,23 @@ const styles = StyleSheet.create({
     fontFamily: "Lovelo",
     marginBottom:15
   },
-  closeButton: {
-    marginTop: 10,
-    color: 'blue',
-    textAlign: 'center',
+  myLocationButton: {
+    position: 'absolute',
+    bottom: 85,
+    right: 20,
+    backgroundColor: '#00bf63',
+    padding: 10,
+    borderRadius: 100,
+    elevation: 5,
   },
+  mapTypeButton: {
+    position: 'absolute',
+    bottom: 30,
+    right: 20,
+    backgroundColor: '#00bf63',
+    padding: 10,
+    borderRadius: 100,
+    elevation: 5,
+  }
 });
+

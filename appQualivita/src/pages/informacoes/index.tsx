@@ -17,9 +17,9 @@ export default function Informacoes() {
     <Text style={styles.textoSecundario}>Bairro: Santa Rosa</Text>
     <Text style={styles.textoSecundario}>Rua: Hilda Rosa de Jesus</Text>
     <View style={styles.dadosSensor}>
-      <Text style={styles.textoSensor}>temp: 24º</Text>
-      <Text style={styles.textoSensor}>umidade: 52%</Text>
-      <Text style={styles.textoCondicao}>Condição do ar: boa</Text>
+      <Text style={styles.textoSensor}>temp: 24ºC</Text>
+      <Text style={styles.textoSensor}> umidade: 52%</Text>
+      <Text style={styles.textoCondicao}> Condição do ar: boa</Text>
     </View>
   </View>
   </TouchableOpacity>
@@ -70,7 +70,8 @@ const styles = StyleSheet.create({
     color: '#4CAF50',
 },
   textoCondicao: {
-    fontSize: 14,
+    fontSize: 12,
+    fontFamily: 'Poppins',
     color: '#4CAF50',
 }
 })
