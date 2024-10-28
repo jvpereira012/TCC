@@ -1,22 +1,10 @@
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  Text,
-  View,
-  StyleSheet,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  Alert
-} from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackTypes } from '../../routes';
 import { Ionicons } from '@expo/vector-icons';
 import {
-  createUserWithEmailAndPassword,
-  updateProfile
+  createUserWithEmailAndPassword, updateProfile
 } from 'firebase/auth';
 import { auth, db } from '../../services/firebaseConfigs';
 import { doc, setDoc } from 'firebase/firestore';
@@ -40,19 +28,18 @@ export default function Cadastro() {
       Alert.alert("Erro", "As senhas não coincidem!");
       return;
     }
-
     createUserWithEmailAndPassword(auth, userEmail, userSenha)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log("Usuário cadastrado",user);
-        // Atualiza o perfil com o nome do usuário
+        console.log("Usuário cadastrado", user);
+
         updateProfile(user, {
           displayName: nomeUsuario,
         })
           .then(() => {
             console.log("Perfil cadastrado com sucesso!");
             salvarDadosAdicionais(user.uid);
-            navigation.navigate('TabNavigator');
+          
           })
           .catch((error) => {
             console.error("Erro ao atualizar o perfil:", error);
@@ -67,11 +54,11 @@ export default function Cadastro() {
 
   const salvarDadosAdicionais = async (userId: string) => {
     try {
-      await setDoc(doc(db, "users", userId), {
+      await setDoc(doc(db, "usuarios", userId), {
         nome: nomeUsuario,
         dataNascimento: userDataNasc,
         email: userEmail,
-        senha: userSenha
+        userID: userId,
       });
       console.log("Dados adicionais salvos no Firestore!");
       Alert.alert("Sucesso", "Cadastro realizado com sucesso!");
