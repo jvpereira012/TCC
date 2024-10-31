@@ -10,7 +10,7 @@ export default function Graficos() {
     return (
         <SafeAreaView style={styles.container}>
           <TouchableOpacity style={styles.BackBottom} onPress={() => { navigation.goBack()}}>
-          <AntDesign name="arrowleft" size={24} color="#efebef" />
+          <AntDesign name="arrowleft" size={29} color="#efebef" />
           </TouchableOpacity>
         <Text style={styles.title}>Histórico de dados</Text>
 
@@ -78,9 +78,9 @@ const styles = StyleSheet.create({
     BackBottom: {
       position: 'absolute',
       bottom: '5%',
-      right: '85%',
+      right: '80%',
       backgroundColor: '#00bf63',
-      padding: 10,
+      padding: 15,
       borderRadius: 100,
       elevation: 5,
   }

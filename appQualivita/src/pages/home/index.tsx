@@ -143,10 +143,10 @@ const styles = StyleSheet.create({
     bottom: 20,  
     left: 20,
     right: 20,
-    padding: 10,
+    padding: 15,
     backgroundColor: '#efebef',
-    borderRadius: 8,
-    elevation: 5,
+    borderRadius: 10,
+    elevation: 10,
   },
   infoText: {
     fontSize: 16,
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     color:"#00bf63"
   },
   infoTitulo: {
-    fontSize: 16,
+    fontSize: 20,
     marginVertical: 2,
     textAlign:"center",
     fontFamily: "Lovelo",
