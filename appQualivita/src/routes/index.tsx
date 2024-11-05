@@ -9,9 +9,11 @@ import Boasvindas2 from '../pages/boas-vindas2';
 import Boasvindas3 from '../pages/boas-vindas3';
 import Login from "../pages/login";
 import Cadastro from "../pages/cadastro";
+import Redefinicao from "../pages/redefinicao";
 import Home from "../pages/home";
 import Informacoes from "../pages/informacoes";
 import Graficos from "../pages/grafico";
+
 import { useState } from "react";
 
 
@@ -23,6 +25,7 @@ type StackNavigation = {
   Boasvindas2: undefined;
   Boasvindas3: undefined;
   Login: undefined;
+  Redefinicao: undefined;
   Cadastro: undefined;
   TabNavigator: undefined;
   Graficos: undefined;
@@ -104,6 +107,11 @@ export default function Routes() {
       <Stack.Screen
         name="Login"
         component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Redefinicao"
+        component={Redefinicao}
         options={{ headerShown: false }}
       />
       <Stack.Screen

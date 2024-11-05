@@ -76,7 +76,7 @@ export default function Login() {
           </TouchableOpacity>
         </View>
         <View style={styles.infButtons}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => {navigation.navigate('Redefinicao')}}>
             <Text style={styles.infButtonsText}>Esqueceu a sua senha?</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Cadastro')}>
