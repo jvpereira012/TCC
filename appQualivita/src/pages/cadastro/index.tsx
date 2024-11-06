@@ -18,56 +18,65 @@ export default function Cadastro() {
   const [userSenha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
 
-  const fazercadastro = () => {
-    if (!nomeUsuario || !userEmail || !userDataNasc || !userSenha || !confirmarSenha) {
-      Alert.alert("Erro", "Por favor, preencha todos os campos!");
-      return;
-    }
+function formatarDataParaBanco(data: string): string {
+  const [dia, mes, ano] = data.split('/');
+  return `${ano}-${mes}-${dia}`;
+}
 
-    if (userSenha !== confirmarSenha) {
-      Alert.alert("Erro", "As senhas não coincidem!");
-      return;
-    }
-    createUserWithEmailAndPassword(auth, userEmail, userSenha)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log("Usuário cadastrado", user);
+const fazercadastro = () => {
+  if (!nomeUsuario || !userEmail || !userDataNasc || !userSenha || !confirmarSenha) {
+    Alert.alert("Erro", "Por favor, preencha todos os campos!");
+    return;
+  }
 
-        updateProfile(user, {
-          displayName: nomeUsuario,
-        })
-          .then(() => {
-            console.log("Perfil cadastrado com sucesso!");
-            salvarDadosAdicionais(user.uid);
-          
-          })
-          .catch((error) => {
-            console.error("Erro ao atualizar o perfil:", error);
-            Alert.alert("Erro", "Falha ao atualizar o perfil do usuário.");
-          });
+  if (userSenha !== confirmarSenha) {
+    Alert.alert("Erro", "As senhas não coincidem!");
+    return;
+  }
+
+  const dataFormatada = formatarDataParaBanco(userDataNasc);
+
+  createUserWithEmailAndPassword(auth, userEmail, userSenha)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log("Usuário cadastrado", user);
+
+      updateProfile(user, {
+        displayName: nomeUsuario,
       })
-      .catch((error) => {
-        console.error("Erro ao criar usuário:", error.message);
-        Alert.alert("Erro", error.message);
-      });
-  };
+        .then(() => {
+          console.log("Perfil cadastrado com sucesso!");
+          salvarDadosAdicionais(user.uid, dataFormatada);
+        
+        })
+        .catch((error) => {
+          console.error("Erro ao atualizar o perfil:", error);
+          Alert.alert("Erro", "Falha ao atualizar o perfil do usuário.");
+        });
+    })
+    .catch((error) => {
+      console.error("Erro ao criar usuário:", error.message);
+      Alert.alert("Erro", error.message);
+    });
+};
 
-  const salvarDadosAdicionais = async (userId: string) => {
-    try {
-      await setDoc(doc(db, "usuarios", userId), {
-        nome: nomeUsuario,
-        dataNascimento: userDataNasc,
-        email: userEmail,
-        userID: userId,
-      });
-      console.log("Dados adicionais salvos no Firestore!");
-      Alert.alert("Sucesso", "Cadastro realizado com sucesso!");
-      navigation.navigate('Login');
-    } catch (error) {
-      console.error("Erro ao salvar dados adicionais no Firestore:", error);
-      Alert.alert("Erro", "Falha ao salvar dados adicionais.");
-    }
-  };
+
+const salvarDadosAdicionais = async (userId: string, dataNascimento: string) => {
+  try {
+    await setDoc(doc(db, "usuarios", userId), {
+      nome: nomeUsuario,
+      dataNascimento: dataNascimento,
+      email: userEmail,
+      userID: userId,
+    });
+    console.log("Dados adicionais salvos no Firestore!");
+    Alert.alert("Sucesso", "Cadastro realizado com sucesso!");
+    navigation.navigate('Login');
+  } catch (error) {
+    console.error("Erro ao salvar dados adicionais no Firestore:", error);
+    Alert.alert("Erro", "Falha ao salvar dados adicionais.");
+  }
+};
 
   return (
     <KeyboardAvoidingView
