@@ -1,9 +1,9 @@
 import { KeyboardAvoidingView, ScrollView, Platform, Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackTypes } from '../../routes';
 import { Ionicons } from '@expo/vector-icons';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../services/firebaseConfigs';
 
 export default function Login() {
@@ -12,19 +12,26 @@ export default function Login() {
   const [senha, setSenha] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
-  function handleLogin () {
-  signInWithEmailAndPassword(auth, email, senha)
-  .then((userCredential) => {
-    
-    const user = userCredential.user;
-    console.log("Usuário logado",user);
-    navigation.navigate('TabNavigator');
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("Usuário já autenticado:", user);
+        navigation.navigate('TabNavigator');  
+      }
+    });
+    return unsubscribe;
+  }, []);
 
-  })
-  .catch((error) => {
-    Alert.alert("Erro de login",error.code);
-    Alert.alert("Erro de login",error.message);
-  });
+  function handleLogin () {
+    signInWithEmailAndPassword(auth, email, senha)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log("Usuário logado", user);
+        navigation.navigate('TabNavigator');
+      })
+      .catch((error) => {
+        Alert.alert("Erro de login", error.message);
+      });
   }
 
   return (
@@ -87,7 +94,6 @@ export default function Login() {
     </KeyboardAvoidingView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -8,22 +8,22 @@ import { auth } from '../../services/firebaseConfigs';
 export default function Redefinicao() {
   const navigation = useNavigation<StackTypes>();
   const [email, setEmail] = useState('');
-  function redefinirsenha(){
-    if(email !== ''){
-      sendPasswordResetEmail(auth,email).then(() => {
-        Alert.alert("Mensagem",`Foi enviada uma mensagem para ${email}, verifique seu email!`);
-        navigation.navigate("Login");
-      })
-      .catch((error) => {
-        Alert.alert("OPS!" + error.message + "tente novamente!");
-        return;
-      })
-    }
-    else{
-      Alert.alert("Mensagem","É necessário informar o email para redefinir sua senha.")
-      return;
+
+  function redefinirsenha() {
+    if (email !== '') {
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          Alert.alert("Mensagem", `Foi enviada uma mensagem para ${email}, verifique seu email!`);
+          navigation.navigate("Login");
+        })
+        .catch((error) => {
+          Alert.alert("OPS!", error.message + " Tente novamente!");
+        });
+    } else {
+      Alert.alert("Mensagem", "É necessário informar o email para redefinir sua senha.");
     }
   }
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -49,7 +49,7 @@ export default function Redefinicao() {
           <TouchableOpacity
             style={styles.buttonInput}
             onPress={redefinirsenha}>
-            <Text style={{ color: '#fff', fontFamily: 'Poppins-Bold' }}>ENVIAR</Text>
+            <Text style={styles.buttonText}>ENVIAR</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.infButtons} onPress={() => navigation.navigate('Login')}>
             <Text style={styles.infButtonsText}>Vá para a tela de login</Text>
@@ -69,57 +69,70 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 20,
+    marginTop: -50, 
   },
   containerHeader: {
     alignItems: 'center',
-    marginVertical: 20,
+    marginBottom: 30,
   },
   imgContainer: {
     resizeMode: 'contain',
-    width: 220,
-    height: 270,
+    width: 200,
+    height: 250,
   },
   titletext: {
-    fontSize: 45,
+    fontSize: 35,
     fontFamily: 'Lovelo',
     textAlign: 'center',
+    marginTop: 10,
   },
   subtitle: {
     fontFamily: 'Lovelo',
-
     textAlign: 'center',
     fontSize: 14,
+    marginTop: 5,
+    paddingHorizontal: 10,
   },
   formView: {
-    width: '80%',
+    width: '100%',
+    alignItems: 'center',
   },
   textLabel: {
     fontFamily: 'Poppins-Bold',
     fontSize: 13,
+    alignSelf: 'flex-start',
+    marginLeft: 10,
     marginBottom: 5,
   },
   textInput: {
-    fontSize: 12,
+    fontSize: 14,
     borderRadius: 15,
     backgroundColor: '#fff',
     height: 50,
-    paddingHorizontal: 10,
-    marginBottom: 12,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+    width: '100%',
   },
   buttonInput: {
     borderRadius: 8,
-    marginTop: 10,
     backgroundColor: '#00Bf63',
-    paddingVertical: 10,
+    paddingVertical: 12,
     alignItems: 'center',
+    width: '100%',
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: '#fff',
+    fontFamily: 'Poppins-Bold',
   },
   infButtons: {
+    marginTop: 15,
     alignItems: 'center',
-    marginVertical: 20,
   },
   infButtonsText: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 12,
-    textAlign: 'center',
-  }
+    color: '#333',
+  },
 });
