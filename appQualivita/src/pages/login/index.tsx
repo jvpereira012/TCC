@@ -103,11 +103,13 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   imgContainer: {
+    marginTop: "-30%",
     resizeMode: 'contain',
     width: 220,
     height: 270,
   },
   titletext: {
+    marginTop: "-10%",
     fontSize: 45,
     fontFamily: 'Lovelo',
     textAlign: 'center', 
