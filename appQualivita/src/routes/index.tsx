@@ -13,8 +13,8 @@ import Redefinicao from "../pages/redefinicao";
 import Home from "../pages/home";
 import Informacoes from "../pages/informacoes";
 import Graficos from "../pages/grafico";
+import Configuracoes from "../pages/configuracoes";
 
-import { useState } from "react";
 
 
 const Stack = createStackNavigator();
@@ -34,6 +34,7 @@ type StackNavigation = {
 type TabNavigation = {
   Home: undefined;
   Informacoes: undefined;
+  Configuracoes: undefined;
 }
 
 
@@ -72,6 +73,17 @@ export function TabNavigator() {
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="information-variant" size={size} color={'#efebef'} />
+          ),
+          tabBarLabelStyle: { fontFamily: 'Lovelo', fontSize: 10, color: '#efebef' },
+        }}
+      />
+      <Tab.Screen 
+        name = "CONFIGURAÇÕES"
+        component={Configuracoes}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="cog" size={size} color={'#efebef'} />
           ),
           tabBarLabelStyle: { fontFamily: 'Lovelo', fontSize: 10, color: '#efebef' },
         }}
