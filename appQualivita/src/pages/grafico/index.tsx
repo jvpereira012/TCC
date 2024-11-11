@@ -14,14 +14,16 @@ export default function Graficos() {
           </TouchableOpacity>
         <Text style={styles.title}>Histórico de dados</Text>
 
-        <View style={styles.dadosBox}>
-    <Text style={styles.textoPrincipal}>Id sensor: 1</Text>
+        
+    <Text style={styles.textoPrincipal}>NÚMERO DO SENSOR: 1</Text>
     <Text style={styles.textoSecundario}>Santa Rosa, Hilda Rosa de Jesus</Text>
-    <Text style={styles.textoPrincipal}>dados: 20/10/2024</Text>
+    <View style={styles.dadosBox}>
+    <Text style={styles.textoPrincipal}>DATA: 20/10/2024</Text>
     <View style={styles.dadosSensor}>
-      <Text style={styles.textoSensor}>temp: 24º</Text>
-      <Text style={styles.textoSensor}>umidade: 52%</Text>
-      <Text style={styles.textoCondicao}>Condição do ar: boa</Text>
+      <Text style={styles.textoSensor}>Temperatura: 24ºC</Text>
+      <Text style={styles.textoSensor}>Umidade: 52%</Text>
+      <Text style={styles.textoSensor}>ppm CO2: 1520</Text>
+      <Text style={styles.textoSensor}>ppm CO: 1220</Text>
     </View>
   </View>
       </SafeAreaView>
@@ -38,9 +40,9 @@ const styles = StyleSheet.create({
     title: {
       textAlign: 'center',
       fontFamily: 'Lovelo',
-      fontSize: 20,
+      fontSize: 26,
       color: '#00bf63',
-      marginTop: 25,
+      marginTop: 40,
       marginBottom: 45,
       margin: 17 ,
   },
@@ -52,11 +54,11 @@ const styles = StyleSheet.create({
       marginVertical: 10,
   },
     textoPrincipal: {
-      fontSize: 16,
+      fontSize: 17,
       fontFamily: 'Poppins-SemiBold'
   },
     textoSecundario: {
-      fontSize: 14,
+      fontSize: 15,
       fontFamily: 'Poppins',
       marginVertical: 2,
   },
@@ -66,7 +68,7 @@ const styles = StyleSheet.create({
       marginTop: 10,
   },
     textoSensor: {
-      fontSize: 12,
+      fontSize: 15,
       fontFamily: 'Poppins',
       color: '#4CAF50',
   },
