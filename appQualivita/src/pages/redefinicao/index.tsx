@@ -35,7 +35,7 @@ export default function Redefinicao() {
             style={styles.imgContainer}
           />
           <Text style={styles.titletext}>RECUPERAÇÃO DE SENHA</Text>
-          <Text style={styles.subtitle}>INSIRA SEU EMAIL PARA FAZER A AUTENTIFICAÇÃO NO APP</Text>
+          <Text style={styles.subtitle}>INSIRA SEU EMAIL PARA REDEFINIR SUA SENHA</Text>
         </View>
         <View style={styles.formView}>
           <Text style={styles.textLabel}>EMAIL*</Text>
@@ -73,8 +73,9 @@ const styles = StyleSheet.create({
     marginTop: -50, 
   },
   containerHeader: {
+    marginTop: '-15%',
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 20,
   },
   imgContainer: {
     resizeMode: 'contain',
@@ -85,10 +86,10 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontFamily: 'Lovelo',
     textAlign: 'center',
-    marginTop: 10,
+    marginTop: '-10%',
   },
   subtitle: {
-    fontFamily: 'Lovelo',
+    fontFamily: 'Poppins',
     textAlign: 'center',
     fontSize: 14,
     marginTop: 5,
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     fontSize: 13,
     alignSelf: 'flex-start',
-    marginLeft: 10,
+    marginLeft: '6%',
     marginBottom: 5,
   },
   textInput: {
@@ -112,14 +113,14 @@ const styles = StyleSheet.create({
     height: 50,
     paddingHorizontal: 15,
     marginBottom: 20,
-    width: '100%',
+    width: '90%',
   },
   buttonInput: {
     borderRadius: 8,
     backgroundColor: '#00Bf63',
-    paddingVertical: 12,
+    paddingVertical: 10,
     alignItems: 'center',
-    width: '100%',
+    width: '90%',
     marginBottom: 20,
   },
   buttonText: {
@@ -133,6 +134,5 @@ const styles = StyleSheet.create({
   infButtonsText: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 12,
-    color: '#333',
   },
 });
