@@ -1,16 +1,34 @@
 import { Text, StyleSheet, SafeAreaView, TouchableOpacity, Animated, View } from 'react-native';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StackTypes } from '../../routes';
 import { useNavigation } from '@react-navigation/native';
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { db } from '../../services/firebaseConfigs';
+import { doc, setDoc, collection, getDoc } from 'firebase/firestore';
+
 
 export default function Informacoes() {
+  const idRegistro = 'OABByTRpI59NHBcKPdT';
+  const [dados, setDados] = useState([]);
   const navigation = useNavigation<StackTypes>();
   const [showInfoBox, setShowInfoBox] = useState(false);
   const translateYAnim = useRef(new Animated.Value(300)).current;
+  const docRef = doc(db, "sensores", idRegistro);
+  
+  async function infSensores() {
+    
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.log("Informações:", docSnap.data());
+    } else {
+      
+      console.log("Não há documento");
+    }
+  }
+  console.log(infSensores());
 
   const toggleInfoBox = () => {
     if (showInfoBox) {
@@ -29,6 +47,8 @@ export default function Informacoes() {
     }
   };
 
+
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>DADOS DOS SENSORES</Text>
@@ -39,27 +59,27 @@ export default function Informacoes() {
           <Text style={styles.textoSecundario}>Bairro: Santa Rosa</Text>
           <Text style={styles.textoSecundario}>Rua: Hilda Rosa de Jesus</Text>
           <View style={styles.dadosSensor}>
-            <Text style={styles.textoSensor}><Feather name="sun" size={20}/> 24ºC</Text>
-            <Text style={styles.textoSensor}><MaterialCommunityIcons name="water-outline" size={20}/>52% </Text>
-            <Text style={styles.textoSensor}><Entypo name="air" size={20}/> Bom</Text>
+            <Text style={styles.textoSensor}><Feather name="sun" size={20} /> 24ºC</Text>
+            <Text style={styles.textoSensor}><MaterialCommunityIcons name="water-outline" size={20} />52% </Text>
+            <Text style={styles.textoSensor}><Entypo name="air" size={20} /> Bom</Text>
           </View>
         </View>
       </TouchableOpacity>
 
       {/* Botão de informações no canto direito */}
       <TouchableOpacity style={styles.infoButton} onPress={toggleInfoBox}>
-      <AntDesign name="questioncircleo" size={29} color="#00bf63" />
+        <AntDesign name="questioncircleo" size={29} color="#00bf63" />
       </TouchableOpacity>
 
       {/* Caixinha de informações animada */}
       {showInfoBox && (
         <Animated.View style={[styles.infoBox, { transform: [{ translateY: translateYAnim }] }]}>
-           <TouchableOpacity style={styles.closeButton} onPress={() => toggleInfoBox()}>
-           <AntDesign name="close" size={29} color="black" />
+          <TouchableOpacity style={styles.closeButton} onPress={() => toggleInfoBox()}>
+            <AntDesign name="close" size={29} color="black" />
           </TouchableOpacity>
-          <Text style={styles.infoText}><Feather name="sun" size={20} color= '#00bf63'/>  Temperatura ambiente</Text>
-          <Text style={styles.infoText}><MaterialCommunityIcons name="water-outline" size={20} color= '#00bf63'/>  Umidade no local</Text>
-          <Text style={styles.infoText}><Entypo name="air" size={20} color= '#00bf63'/>  Qualidade do ar</Text>
+          <Text style={styles.infoText}><Feather name="sun" size={20} color='#00bf63' />  Temperatura ambiente</Text>
+          <Text style={styles.infoText}><MaterialCommunityIcons name="water-outline" size={20} color='#00bf63' />  Umidade no local</Text>
+          <Text style={styles.infoText}><Entypo name="air" size={20} color='#00bf63' />  Qualidade do ar</Text>
         </Animated.View>
       )}
     </SafeAreaView>
