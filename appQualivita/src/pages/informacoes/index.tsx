@@ -7,28 +7,55 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { db } from '../../services/firebaseConfigs';
-import { doc, setDoc, collection, getDoc } from 'firebase/firestore';
+import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 
 
 export default function Informacoes() {
-  const idRegistro = 'OABByTRpI59NHBcKPdT';
-  const [dados, setDados] = useState([]);
+  const [temp, setTemp] = useState(null);
+  const [cidade, setCidade] = useState(null);
+  const [rua, setRua] = useState(null);
+  const [bairro, setBairro] = useState(null);
+  const [umidade, setUmidade] = useState(null);
   const navigation = useNavigation<StackTypes>();
   const [showInfoBox, setShowInfoBox] = useState(false);
   const translateYAnim = useRef(new Animated.Value(300)).current;
-  const docRef = doc(db, "sensores", idRegistro);
-  
-  async function infSensores() {
-    
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      console.log("Informações:", docSnap.data());
-    } else {
+
+
+
+
+
+  const getInf = async () => {
+    try {
+      const q = query(
+        collection(db, 'sensores'), 
+        orderBy('horarioRegistro', 'desc'), 
+        limit(1) 
+      );
       
-      console.log("Não há documento");
+      const querySnapshot = await getDocs(q);
+      
+      if (!querySnapshot.empty) {
+        const doc = querySnapshot.docs[0]; 
+        const data = doc.data();
+        console.log(data);
+        setCidade(data.cidade);
+        setRua(data.rua);
+        setBairro(data.bairro);
+        setTemp(data.temperatura);
+        setUmidade(data.umidade);
+      } else {
+        console.log('Nenhum documento encontrado.');
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados:', error);
     }
-  }
-  console.log(infSensores());
+  };
+
+  useEffect(() => {
+    getInf();
+  }, []);
+
+
 
   const toggleInfoBox = () => {
     if (showInfoBox) {
@@ -55,12 +82,12 @@ export default function Informacoes() {
 
       <TouchableOpacity onPress={() => { navigation.navigate('Graficos') }}>
         <View style={styles.dadosBox}>
-          <Text style={styles.textoPrincipal}>Cidade: São José dos Campos</Text>
-          <Text style={styles.textoSecundario}>Bairro: Santa Rosa</Text>
-          <Text style={styles.textoSecundario}>Rua: Hilda Rosa de Jesus</Text>
+          <Text style={styles.textoPrincipal}>Cidade: {cidade}</Text>
+          <Text style={styles.textoSecundario}>Bairro: {bairro}</Text>
+          <Text style={styles.textoSecundario}>Rua: {rua}</Text>
           <View style={styles.dadosSensor}>
-            <Text style={styles.textoSensor}><Feather name="sun" size={20} /> 24ºC</Text>
-            <Text style={styles.textoSensor}><MaterialCommunityIcons name="water-outline" size={20} />52% </Text>
+            <Text style={styles.textoSensor}><Feather name="sun" size={20} /> {temp}ºC</Text>
+            <Text style={styles.textoSensor}><MaterialCommunityIcons name="water-outline" size={20} />{umidade}% </Text>
             <Text style={styles.textoSensor}><Entypo name="air" size={20} /> Bom</Text>
           </View>
         </View>
@@ -159,3 +186,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
+
+
+
+
+
+
+
