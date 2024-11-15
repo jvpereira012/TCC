@@ -40,15 +40,15 @@ export default function Home() {
   const getInf = async () => {
     try {
       const q = query(
-        collection(db, 'sensores'), 
-        orderBy('horarioRegistro', 'desc'), 
+        collection(db, 'sensores'),
+        orderBy('horarioRegistro', 'desc'),
         limit(1)
       );
-      
+
       const querySnapshot = await getDocs(q);
-      
+
       if (!querySnapshot.empty) {
-        const doc = querySnapshot.docs[0]; 
+        const doc = querySnapshot.docs[0];
         const data = doc.data();
         console.log(data);
         setTemp(data.temperatura);
@@ -65,7 +65,7 @@ export default function Home() {
     await getInf(); // Busca os dados do banco de dados antes de mostrar a caixa
     setShowInfo(!showInfo);
     Animated.timing(translateYAnim, {
-      toValue: showInfo ? 300 : 0, 
+      toValue: showInfo ? 300 : 0,
       duration: 300,
       easing: Easing.ease,
       useNativeDriver: true,
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   },
   infoBox: {
     position: 'absolute',
-    bottom: 20,  
+    bottom: 20,
     left: 20,
     right: 20,
     padding: 15,
@@ -179,14 +179,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginVertical: 2,
     fontFamily: "Lovelo",
-    color:"#00bf63"
+    color: "#00bf63"
   },
   infoTitulo: {
     fontSize: 20,
     marginVertical: 2,
-    textAlign:"center",
+    textAlign: "center",
     fontFamily: "Lovelo",
-    marginBottom:15
+    marginBottom: 15
   },
   myLocationButton: {
     position: 'absolute',

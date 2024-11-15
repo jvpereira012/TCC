@@ -12,10 +12,10 @@ import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 
 export default function Informacoes() {
   const [temp, setTemp] = useState("Carregando...");
- const [cidade, setCidade] = useState("Carregando...");
- const [rua, setRua] = useState("Carregando...");
- const [bairro, setBairro] = useState("Carregando...");
- const [umidade, setUmidade] = useState("Carregando...");
+  const [cidade, setCidade] = useState("Carregando...");
+  const [rua, setRua] = useState("Carregando...");
+  const [bairro, setBairro] = useState("Carregando...");
+  const [umidade, setUmidade] = useState("Carregando...");
   const navigation = useNavigation<StackTypes>();
   const [showInfoBox, setShowInfoBox] = useState(false);
   const translateYAnim = useRef(new Animated.Value(300)).current;
@@ -27,15 +27,15 @@ export default function Informacoes() {
   const getInf = async () => {
     try {
       const q = query(
-        collection(db, 'sensores'), 
-        orderBy('horarioRegistro', 'desc'), 
-        limit(1) 
+        collection(db, 'sensores'),
+        orderBy('horarioRegistro', 'desc'),
+        limit(1)
       );
-      
+
       const querySnapshot = await getDocs(q);
-      
+
       if (!querySnapshot.empty) {
-        const doc = querySnapshot.docs[0]; 
+        const doc = querySnapshot.docs[0];
         const data = doc.data();
         console.log(data);
         setCidade(data.cidade);
