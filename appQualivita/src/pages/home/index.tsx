@@ -1,13 +1,17 @@
-import { StyleSheet, SafeAreaView, View, Text, Image, TouchableWithoutFeedback, TouchableOpacity, Animated, Easing } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, Image, TouchableWithoutFeedback, TouchableOpacity, Animated, Easing } from 'react-native';
 import { getCurrentPositionAsync, requestForegroundPermissionsAsync, LocationObject, watchPositionAsync, LocationAccuracy } from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
 import React, { useEffect, useState, useRef } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { db } from '../../services/firebaseConfigs';
+import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 
 export default function Home() {
   const [localizacao, setLocalizacao] = useState<LocationObject | null>(null);
   const [mapType, setMapType] = useState<'standard' | 'satellite'>('standard');
   const [showInfo, setShowInfo] = useState(false);
+  const [temp, setTemp] = useState("Carregando...");
+  const [umidade, setUmidade] = useState("Carregando...");
   const translateYAnim = useRef(new Animated.Value(300)).current;
   const mapRef = useRef<MapView>(null);
 
@@ -33,7 +37,32 @@ export default function Home() {
     });
   }, []);
 
-  const toggleInfoBox = () => {
+  const getInf = async () => {
+    try {
+      const q = query(
+        collection(db, 'sensores'), 
+        orderBy('horarioRegistro', 'desc'), 
+        limit(1)
+      );
+      
+      const querySnapshot = await getDocs(q);
+      
+      if (!querySnapshot.empty) {
+        const doc = querySnapshot.docs[0]; 
+        const data = doc.data();
+        console.log(data);
+        setTemp(data.temperatura);
+        setUmidade(data.umidade);
+      } else {
+        console.log('Nenhum documento encontrado.');
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados:', error);
+    }
+  };
+
+  const toggleInfoBox = async () => {
+    await getInf(); // Busca os dados do banco de dados antes de mostrar a caixa
     setShowInfo(!showInfo);
     Animated.timing(translateYAnim, {
       toValue: showInfo ? 300 : 0, 
@@ -62,7 +91,7 @@ export default function Home() {
           latitude: localizacao.coords.latitude,
           longitude: localizacao.coords.longitude,
         },
-        zoom: 18, 
+        zoom: 18,
       });
     }
   };
@@ -104,20 +133,18 @@ export default function Home() {
 
         <Animated.View style={[styles.infoBox, { transform: [{ translateY: translateYAnim }] }]}>
           <Text style={styles.infoTitulo}>Informações do sensor</Text>
-          <Text style={styles.infoText}>Temperatura no ambiente: 26°C</Text>
-          <Text style={styles.infoText}>umidade na área: 40%</Text>
-          <Text style={styles.infoText}>condição do ar: boa</Text>
+          <Text style={styles.infoText}>Temperatura no ambiente: {temp}°C</Text>
+          <Text style={styles.infoText}>Umidade na área: {umidade}%</Text>
+          <Text style={styles.infoText}>Condição do ar: boa</Text>
         </Animated.View>
 
-        {}
         {!showInfo && (
           <TouchableOpacity style={styles.myLocationButton} onPress={centerToMyLocation}>
             <Ionicons name="locate" size={24} color="#efebef" />
           </TouchableOpacity>
         )}
 
-        {}
-        {!showInfo && (  
+        {!showInfo && (
           <TouchableOpacity style={styles.mapTypeButton} onPress={toggleMapType}>
             <Ionicons name="layers-sharp" size={24} color="#efebef" />
           </TouchableOpacity>
@@ -180,4 +207,3 @@ const styles = StyleSheet.create({
     elevation: 5,
   }
 });
-

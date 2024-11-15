@@ -11,11 +11,11 @@ import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 
 
 export default function Informacoes() {
-  const [temp, setTemp] = useState(null);
-  const [cidade, setCidade] = useState(null);
-  const [rua, setRua] = useState(null);
-  const [bairro, setBairro] = useState(null);
-  const [umidade, setUmidade] = useState(null);
+  const [temp, setTemp] = useState("Carregando...");
+ const [cidade, setCidade] = useState("Carregando...");
+ const [rua, setRua] = useState("Carregando...");
+ const [bairro, setBairro] = useState("Carregando...");
+ const [umidade, setUmidade] = useState("Carregando...");
   const navigation = useNavigation<StackTypes>();
   const [showInfoBox, setShowInfoBox] = useState(false);
   const translateYAnim = useRef(new Animated.Value(300)).current;
@@ -45,6 +45,7 @@ export default function Informacoes() {
         setUmidade(data.umidade);
       } else {
         console.log('Nenhum documento encontrado.');
+
       }
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
