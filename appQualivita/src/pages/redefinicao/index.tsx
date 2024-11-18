@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, ScrollView, Platform, Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, Platform, Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackTypes } from '../../routes';
@@ -8,18 +8,25 @@ import { auth } from '../../services/firebaseConfigs';
 export default function Redefinicao() {
   const navigation = useNavigation<StackTypes>();
   const [email, setEmail] = useState('');
+  const [carregamento, setCarregamento] = useState(false);
 
   function redefinirsenha() {
+    setCarregamento(true);
     if (email !== '') {
+      setCarregamento(true);
       sendPasswordResetEmail(auth, email)
-        .then(() => {
-          Alert.alert("Mensagem", `Foi enviada uma mensagem para ${email}, verifique seu email!`);
-          navigation.navigate("Login");
-        })
-        .catch((error) => {
+      .then(() => {
+        Alert.alert("Mensagem", `Foi enviada uma mensagem para ${email}, verifique seu email!`);
+        setCarregamento(false);
+        navigation.navigate("Login");
+        setEmail('');
+      })
+      .catch((error) => {
+          setCarregamento(false);
           Alert.alert("OPS!", error.message + " Tente novamente!");
         });
-    } else {
+      } else {
+      setCarregamento(false);
       Alert.alert("Mensagem", "É necessário informar o email para redefinir sua senha.");
     }
   }
@@ -47,10 +54,16 @@ export default function Redefinicao() {
             value={email}
           />
           <TouchableOpacity
-            style={styles.buttonInput}
-            onPress={redefinirsenha}>
-            <Text style={styles.buttonText}>ENVIAR</Text>
-          </TouchableOpacity>
+              style={styles.buttonInput}
+              onPress={redefinirsenha}
+              disabled={carregamento}
+            >
+              {carregamento ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <Text style={{ color: '#fff', fontFamily: 'Poppins-Bold' }}>ENVIAR</Text>
+              )}
+            </TouchableOpacity>
           <TouchableOpacity style={styles.infButtons} onPress={() => navigation.navigate('Login')}>
             <Text style={styles.infButtonsText}>Vá para a tela de login</Text>
           </TouchableOpacity>

@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, Platform, ScrollView, Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackTypes } from '../../routes';
@@ -12,71 +12,86 @@ import { doc, setDoc } from 'firebase/firestore';
 export default function Cadastro() {
   const navigation = useNavigation<StackTypes>();
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [carregamento, setCarregamento] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState('');
   const [userEmail, setEmail] = useState('');
   const [userDataNasc, setDataNasc] = useState('');
   const [userSenha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
 
-function formatarDataParaBanco(data: string): string {
-  const [dia, mes, ano] = data.split('/');
-  return `${ano}-${mes}-${dia}`;
-}
-
-const fazercadastro = () => {
-  if (!nomeUsuario || !userEmail || !userDataNasc || !userSenha || !confirmarSenha) {
-    Alert.alert("Erro", "Por favor, preencha todos os campos!");
-    return;
+  function formatarDataParaBanco(data: string): string {
+    const [dia, mes, ano] = data.split('/');
+    return `${ano}-${mes}-${dia}`;
   }
 
-  if (userSenha !== confirmarSenha) {
-    Alert.alert("Erro", "As senhas não coincidem!");
-    return;
-  }
+  const fazercadastro = () => {
+    setCarregamento(true);
+    if (!nomeUsuario || !userEmail || !userDataNasc || !userSenha || !confirmarSenha) {
+      setCarregamento(false);
+      Alert.alert("Erro", "Por favor, preencha todos os campos!");
+      return;
+    }
 
-  const dataFormatada = formatarDataParaBanco(userDataNasc);
+    if (userSenha !== confirmarSenha) {
+      Alert.alert("Erro", "As senhas não coincidem!");
+      return;
+    }
 
-  createUserWithEmailAndPassword(auth, userEmail, userSenha)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log("Usuário cadastrado", user);
+    const dataFormatada = formatarDataParaBanco(userDataNasc);
+    setCarregamento(true);
+    createUserWithEmailAndPassword(auth, userEmail, userSenha)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        setCarregamento(false);
+        console.log("Usuário cadastrado", user);
 
-      updateProfile(user, {
-        displayName: nomeUsuario,
-      })
-        .then(() => {
-          console.log("Perfil cadastrado com sucesso!");
-          salvarDadosAdicionais(user.uid, dataFormatada);
-        
+        updateProfile(user, {
+          displayName: nomeUsuario,
         })
-        .catch((error) => {
-          console.error("Erro ao atualizar o perfil:", error);
-          Alert.alert("Erro", "Falha ao atualizar o perfil do usuário.");
-        });
-    })
-    .catch((error) => {
-      console.error("Erro ao criar usuário:", error.message);
-      Alert.alert("Erro", error.message);
-    });
-};
+          .then(() => {
+            console.log("Perfil cadastrado com sucesso!");
+            setCarregamento(false);
+            salvarDadosAdicionais(user.uid, dataFormatada);
+          })
+
+          .catch((error) => {
+            setCarregamento(false);
+            console.error("Erro ao atualizar o perfil:", error);
+            Alert.alert("Erro", "Falha ao atualizar o perfil do usuário.");
+          });
+      })
+      .catch((error) => {
+        setCarregamento(false);
+        console.error("Erro ao criar usuário:", error.message);
+        Alert.alert("Erro", error.message);
+      });
+  };
 
 
-const salvarDadosAdicionais = async (userId: string, dataNascimento: string) => {
-  try {
-    await setDoc(doc(db, "usuarios", userId), {
-      nome: nomeUsuario,
-      dataNascimento: dataNascimento,
-      email: userEmail,
-      userID: userId,
-    });
-    console.log("Dados adicionais salvos no Firestore!");
-    Alert.alert("Sucesso", "Cadastro realizado com sucesso!");
-    navigation.navigate('Login');
-  } catch (error) {
-    console.error("Erro ao salvar dados adicionais no Firestore:", error);
-    Alert.alert("Erro", "Falha ao salvar dados adicionais.");
-  }
-};
+  const salvarDadosAdicionais = async (userId: string, dataNascimento: string) => {
+    try {
+      setCarregamento(true);
+      await setDoc(doc(db, "usuarios", userId), {
+        nome: nomeUsuario,
+        dataNascimento: dataNascimento,
+        email: userEmail,
+        userID: userId,
+      });
+      setCarregamento(false);
+      setEmail('');
+      setSenha('');
+      setDataNasc('');
+      setNomeUsuario('');
+      setConfirmarSenha('');
+      console.log("Dados adicionais salvos no Firestore!");
+      Alert.alert("Sucesso", "Cadastro realizado com sucesso!");
+      navigation.navigate('Login');
+    } catch (error) {
+      setCarregamento(false);
+      console.error("Erro ao salvar dados adicionais no Firestore:", error);
+      Alert.alert("Erro", "Falha ao salvar dados adicionais.");
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -145,8 +160,16 @@ const salvarDadosAdicionais = async (userId: string, dataNascimento: string) => 
               onChangeText={setDataNasc}
               value={userDataNasc}
             />
-            <TouchableOpacity style={styles.buttonInput} onPress={fazercadastro}>
-              <Text style={{ color: '#fff', fontFamily: 'Poppins-Bold' }}>CADASTRAR</Text>
+            <TouchableOpacity
+              style={styles.buttonInput}
+              onPress={fazercadastro}
+              disabled={carregamento}
+            >
+              {carregamento ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <Text style={{ color: '#fff', fontFamily: 'Poppins-Bold' }}>CADASTRAR</Text>
+              )}
             </TouchableOpacity>
           </View>
           <View style={styles.infButtons}>

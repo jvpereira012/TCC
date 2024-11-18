@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, ScrollView, Platform, Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, Platform, Text, View, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackTypes } from '../../routes';
@@ -10,6 +10,7 @@ export default function Login() {
   const navigation = useNavigation<StackTypes>();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [carregamento, setCarregamento] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   useEffect(() => {
@@ -23,13 +24,19 @@ export default function Login() {
   }, []);
 
   function handleLogin () {
+    setCarregamento(true);
     signInWithEmailAndPassword(auth, email, senha)
       .then((userCredential) => {
+       
         const user = userCredential.user;
+        setCarregamento(false);
         console.log("Usuário logado", user);
+        setEmail('');
+        setSenha('');
         navigation.navigate('TabNavigator');
       })
       .catch((error) => {
+        setCarregamento(false);
         Alert.alert("Erro de login", error.message);
       });
   }
@@ -78,8 +85,14 @@ export default function Login() {
           </View>
           <TouchableOpacity 
             style={styles.buttonInput} 
-            onPress={handleLogin}>
-            <Text style={{ color: '#fff', fontFamily: 'Poppins-Bold' }}>ENTRAR</Text>
+            onPress={handleLogin}
+            disabled={carregamento} 
+          >
+            {carregamento ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <Text style={{ color: '#fff', fontFamily: 'Poppins-Bold' }}>ENTRAR</Text>
+            )}
           </TouchableOpacity>
         </View>
         <View style={styles.infButtons}>
