@@ -9,9 +9,11 @@ import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 export default function Home() {
   const [localizacao, setLocalizacao] = useState<LocationObject | null>(null);
   const [mapType, setMapType] = useState<'standard' | 'satellite'>('standard');
+  let [estado, setEstado] = useState('');
+  let [cor, setCor] = useState('#00bf63');
   const [showInfo, setShowInfo] = useState(false);
-  const [temp, setTemp] = useState("Carregando...");
-  const [umidade, setUmidade] = useState("Carregando...");
+  let [temp, setTemp] = useState("Carregando...");
+  let [umidade, setUmidade] = useState("Carregando...");
   const translateYAnim = useRef(new Animated.Value(300)).current;
   const mapRef = useRef<MapView>(null);
 
@@ -64,6 +66,29 @@ export default function Home() {
         console.log(data);
         setTemp(data.temperatura);
         setUmidade(data.umidade);
+        let co = data.infCO;
+        if (co <= 9) {
+          setCor('#4CAF50');
+          setEstado('Boa');
+        }
+        else if (co > 9 && co <= 11) {
+          setCor('#FFFF00');
+          setEstado('Moderada');
+        }
+        else if (co > 11 && co <= 13) {
+          setCor('#B22222');
+          setEstado('Ruim')
+        }
+        else if (co > 13 && co <= 15) {
+          setCor('#FF4500');
+         
+          setEstado('Muito ruim');
+        }
+        else if (co > 15) {
+          setCor('#4B0082');
+         
+          setEstado('Péssima');
+        }
       } else {
         console.log('Nenhum documento encontrado.');
       }
@@ -149,7 +174,7 @@ export default function Home() {
           <Text style={styles.infoTitulo}>Informações do sensor</Text>
           <Text style={styles.infoText}>Temperatura no ambiente: {temp}°C</Text>
           <Text style={styles.infoText}>Umidade na área: {umidade}%</Text>
-          <Text style={styles.infoText}>Condição do ar: boa</Text>
+          <Text style={styles.infoText}>Condição do ar: {estado}</Text>
         </Animated.View>
 
         {!showInfo && (

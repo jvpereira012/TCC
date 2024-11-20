@@ -9,13 +9,16 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { db } from '../../services/firebaseConfigs';
 import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 
-
+/* Os índices usados como referência estão aqui https://cetesb.sp.gov.br/ar/padroes-de-qualidade-do-ar/*/
 export default function Informacoes() {
-  const [temp, setTemp] = useState("Carregando...");
-  const [cidade, setCidade] = useState("Carregando...");
-  const [rua, setRua] = useState("Carregando...");
-  const [bairro, setBairro] = useState("Carregando...");
-  const [umidade, setUmidade] = useState("Carregando...");
+  let [temp, setTemp] = useState("Carregando...");
+  let [cidade, setCidade] = useState("Carregando...");
+  let [rua, setRua] = useState("Carregando...");
+  let [bairro, setBairro] = useState("Carregando...");
+  let [umidade, setUmidade] = useState("Carregando...");
+  let [estado, setEstado] = useState('');
+  let [cor, setCor] = useState('#00bf63');
+  let [corTexto, setCorTexto] = useState('#00bf63');
   const navigation = useNavigation<StackTypes>();
   const [showInfoBox, setShowInfoBox] = useState(false);
   const translateYAnim = useRef(new Animated.Value(300)).current;
@@ -43,6 +46,33 @@ export default function Informacoes() {
         setBairro(data.bairro);
         setTemp(data.temperatura);
         setUmidade(data.umidade);
+        let co = data.infCO;
+        if (co <= 9) {
+          setCor('#4CAF50');
+          setCorTexto('#4CAF50');
+          setEstado('Boa');
+        }
+        else if (co > 9 && co <= 11) {
+          setCor('#FFFF00');
+          setCorTexto('#FFFF00');
+          setEstado('Moderada');
+        }
+        else if (co > 11 && co <= 13) {
+          setCor('#B22222');
+          setCorTexto('#B22222');
+          setEstado('Ruim')
+        }
+        else if (co > 13 && co <= 15) {
+          setCor('#FF4500');
+          setCorTexto('#FF4500')
+          setEstado('Muito ruim');
+        }
+        else if (co > 15) {
+          setCor('#4B0082');
+          setCorTexto('#4B0082');
+          setEstado('Péssima');
+        }
+
       } else {
         console.log('Nenhum documento encontrado.');
 
@@ -89,14 +119,20 @@ export default function Informacoes() {
           <View style={styles.dadosSensor}>
             <Text style={styles.textoSensor}><Feather name="sun" size={20} /> {temp}ºC</Text>
             <Text style={styles.textoSensor}><MaterialCommunityIcons name="water-outline" size={20} />{umidade}% </Text>
-            <Text style={styles.textoSensor}><Entypo name="air" size={20} /> Bom</Text>
+            <Text style={styles.textoSensor}><Entypo name="air" color={cor} size={20} /> {estado}</Text>
           </View>
         </View>
       </TouchableOpacity>
 
       {/* Botão de informações no canto direito */}
       <TouchableOpacity style={styles.infoButton} onPress={toggleInfoBox}>
-        <AntDesign name="questioncircleo" size={29} color="#00bf63" />
+        <AntDesign name="questioncircleo" size={29} color={cor} />
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.refreshButton} onPress={getInf}>
+        <Text style={styles.refreshText}>
+          <AntDesign name="reload1" size={20} color="#fff" /> Atualizar
+        </Text>
       </TouchableOpacity>
 
       {/* Caixinha de informações animada */}
@@ -107,7 +143,7 @@ export default function Informacoes() {
           </TouchableOpacity>
           <Text style={styles.infoText}><Feather name="sun" size={20} color='#00bf63' />  Temperatura ambiente</Text>
           <Text style={styles.infoText}><MaterialCommunityIcons name="water-outline" size={20} color='#00bf63' />  Umidade no local</Text>
-          <Text style={styles.infoText}><Entypo name="air" size={20} color='#00bf63' />  Qualidade do ar</Text>
+          <Text style={styles.infoText} ><Entypo name="air" size={20} color='#00bf63' />  Qualidade do ar</Text>
         </Animated.View>
       )}
     </SafeAreaView>
@@ -186,6 +222,21 @@ const styles = StyleSheet.create({
     right: 5,
     padding: 10,
   },
+  refreshButton: {
+    marginTop: 20,
+    backgroundColor: '#00bf63',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '90%',
+  },
+  refreshText: {
+    color: '#fff',
+    fontSize: 16,
+    fontFamily: 'Poppins-SemiBold',
+    textAlign: 'center',
+  }
 });
 
 
