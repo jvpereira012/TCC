@@ -15,6 +15,14 @@ export default function Home() {
   const translateYAnim = useRef(new Animated.Value(300)).current;
   const mapRef = useRef<MapView>(null);
 
+  // Estilo personalizado do mapa para remover os POIs
+  const mapStyle = [
+    {
+      featureType: "poi",
+      stylers: [{ visibility: "off" }],
+    },
+  ];
+
   async function requestLocationPermissions() {
     const { granted } = await requestForegroundPermissionsAsync();
     if (granted) {
@@ -28,13 +36,16 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    watchPositionAsync({
-      accuracy: LocationAccuracy.Highest,
-      timeInterval: 1300,
-      distanceInterval: 1
-    }, (resposta) => {
-      setLocalizacao(resposta);
-    });
+    watchPositionAsync(
+      {
+        accuracy: LocationAccuracy.Highest,
+        timeInterval: 1300,
+        distanceInterval: 1,
+      },
+      (resposta) => {
+        setLocalizacao(resposta);
+      }
+    );
   }, []);
 
   const getInf = async () => {
@@ -91,7 +102,7 @@ export default function Home() {
           latitude: localizacao.coords.latitude,
           longitude: localizacao.coords.longitude,
         },
-        zoom: 18,
+        zoom: 19,
       });
     }
   };
@@ -109,17 +120,20 @@ export default function Home() {
             ref={mapRef}
             style={styles.map}
             mapType={mapType}
+            showsUserLocation={true}
+            followsUserLocation={true}
             initialRegion={{
-              latitude: localizacao.coords.latitude,
-              longitude: localizacao.coords.longitude,
+              latitude: -23.239199295057237,
+              longitude: -45.83663704633708,
               latitudeDelta: 0.005,
               longitudeDelta: 0.005,
             }}
+            customMapStyle={mapStyle} // Adiciona o estilo personalizado para ocultar POIs
           >
             <Marker
               coordinate={{
-                latitude: localizacao.coords.latitude,
-                longitude: localizacao.coords.longitude,
+                latitude: -23.239199295057237,
+                longitude: -45.83663704633708,
               }}
               onPress={toggleInfoBox}
             >
@@ -178,15 +192,15 @@ const styles = StyleSheet.create({
   infoText: {
     fontSize: 16,
     marginVertical: 2,
-    fontFamily: "Lovelo",
-    color: "#00bf63"
+    fontFamily: 'Lovelo',
+    color: '#00bf63',
   },
   infoTitulo: {
     fontSize: 20,
     marginVertical: 2,
-    textAlign: "center",
-    fontFamily: "Lovelo",
-    marginBottom: 15
+    textAlign: 'center',
+    fontFamily: 'Lovelo',
+    marginBottom: 15,
   },
   myLocationButton: {
     position: 'absolute',
@@ -205,5 +219,5 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 100,
     elevation: 5,
-  }
+  },
 });
