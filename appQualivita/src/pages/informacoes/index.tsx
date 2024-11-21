@@ -1,4 +1,4 @@
-import { Text, StyleSheet, SafeAreaView, TouchableOpacity, Animated, View } from 'react-native';
+import { Text, StyleSheet, SafeAreaView, TouchableOpacity, Animated, View, ActivityIndicator } from 'react-native';
 import React, { useState, useRef, useEffect } from 'react';
 import { StackTypes } from '../../routes';
 import { useNavigation } from '@react-navigation/native';
@@ -19,6 +19,7 @@ export default function Informacoes() {
   let [estado, setEstado] = useState('');
   let [cor, setCor] = useState('#00bf63');
   let [corTexto, setCorTexto] = useState('#00bf63');
+  const [carregamento, setcarregamento] = useState(false);
   const navigation = useNavigation<StackTypes>();
   const [showInfoBox, setShowInfoBox] = useState(false);
   const translateYAnim = useRef(new Animated.Value(300)).current;
@@ -28,6 +29,7 @@ export default function Informacoes() {
 
 
   const getInf = async () => {
+    setcarregamento(true);
     try {
       const q = query(
         collection(db, 'sensores'),
@@ -80,6 +82,9 @@ export default function Informacoes() {
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
     }
+    finally{
+      setcarregamento(false);
+    }
   };
 
   useEffect(() => {
@@ -129,10 +134,14 @@ export default function Informacoes() {
         <AntDesign name="questioncircleo" size={29} color={cor} />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.refreshButton} onPress={getInf}>
-        <Text style={styles.refreshText}>
-          <AntDesign name="reload1" size={20} color="#fff" /> Atualizar
-        </Text>
+      <TouchableOpacity style={styles.refreshButton} onPress={getInf} disabled={carregamento}>
+        {carregamento ? (
+          <ActivityIndicator size="small" color="#fff" />
+        ) : (
+          <Text style={styles.refreshText}>
+            <AntDesign name="reload1" size={20} color="#fff" /> Atualizar
+          </Text>
+        )}
       </TouchableOpacity>
 
       {/* Caixinha de informações animada */}
