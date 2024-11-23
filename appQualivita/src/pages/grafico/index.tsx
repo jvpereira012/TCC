@@ -16,30 +16,7 @@ import { DadosRegistro } from '../grafico/components';
 
 export default function HistoricoDados() {
   const [registros, setRegistros] = useState<
-  {
-    idSensor: string;
-    bairro: string;
-    rua: string;
-    dia: string;
-    temperatura: string | number;
-    umidade: string | number;
-    infCO: string | number;
-    infCO2: string | number;
-  }[]
->([]);
-const [carregamento, setCarregamento] = useState(false);
-const navigation = useNavigation<StackTypes>();
-
-const getInf = async () => {
-  setCarregamento(true);
-  try {
-    const q = query(
-      collection(db, 'sensores'),
-      orderBy('horarioRegistro', 'desc'),
-    );
-
-    const querySnapshot = await getDocs(q);
-    const docs: {
+    {
       idSensor: string;
       bairro: string;
       rua: string;
@@ -48,43 +25,69 @@ const getInf = async () => {
       umidade: string | number;
       infCO: string | number;
       infCO2: string | number;
-    }[] = [];
+    }[]
+  >([]);
+  const [carregamento, setCarregamento] = useState(false);
+  const navigation = useNavigation<StackTypes>();
 
-    querySnapshot.forEach(doc => {
-      const data = doc.data();
-      const timestamp = data.horarioRegistro?.seconds;
-      const formattedDate = timestamp
-        ? new Date(timestamp * 1000).toLocaleDateString('pt-BR')
-        : "Data não disponível";
+  const getInf = async () => {
+    setCarregamento(true);
+    try {
+      const q = query(
+        collection(db, 'sensores'),
+        orderBy('horarioRegistro', 'desc'),
+      );
 
-      docs.push({
-        idSensor: doc.id,
-        bairro: data.bairro || "N/A",
-        rua: data.rua || "N/A",
-        dia: formattedDate,
-        temperatura: data.temperatura ?? "N/A",
-        umidade: data.umidade ?? "N/A",
-        infCO: data.infCO ?? "N/A",
-        infCO2: data.infCO2 ?? "N/A",
+      const querySnapshot = await getDocs(q);
+      const docs: {
+        idSensor: string;
+        bairro: string;
+        rua: string;
+        dia: string;
+        temperatura: string | number;
+        umidade: string | number;
+        infCO: string | number;
+        infCO2: string | number;
+      }[] = [];
+
+      querySnapshot.forEach(doc => {
+        const data = doc.data();
+        const timestamp = data.horarioRegistro?.seconds;
+        const formattedDate = timestamp
+          ? new Date(timestamp * 1000).toLocaleDateString('pt-BR')
+          : "Data não disponível";
+
+        docs.push({
+          idSensor: doc.id,
+          bairro: data.bairro || "N/A",
+          rua: data.rua || "N/A",
+          dia: formattedDate,
+          temperatura: data.temperatura ?? "N/A",
+          umidade: data.umidade ?? "N/A",
+          infCO: data.infCO ?? "N/A",
+          infCO2: data.infCO2 ?? "N/A",
+        });
       });
-    });
 
-    setRegistros(docs);
-  } catch (error) {
-    console.error("Erro ao buscar dados:", error);
-  } finally {
-    setCarregamento(false);
-  }
-};
+      setRegistros(docs);
+    } catch (error) {
+      console.error("Erro ao buscar dados:", error);
+    } finally {
+      setCarregamento(false);
+    }
+  };
 
-useEffect(() => {
-  getInf();
-}, []);
+  useEffect(() => {
+    getInf();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      
+
       <Text style={styles.title}>Histórico de dados</Text>
+      <Text style={styles.textoPrincipal}>NÚMERO DO SENSOR: 1</Text>
+      <Text style={styles.textoSecundario}>Santa Rosa, Hilda Rosa de Jesus</Text>
+
       <ScrollView contentContainerStyle={styles.scrollView}>
         {registros.map((registro, index) => (
           <DadosRegistro key={index} {...registro} />
@@ -145,5 +148,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Poppins-SemiBold',
     textAlign: 'center',
+  },
+  textoPrincipal: {
+    fontSize: 16,
+    fontFamily: 'Poppins-SemiBold'
+  },
+  textoSecundario: {
+    fontSize: 14,
+    fontFamily: 'Poppins',
+    marginVertical: 2,
   },
 });

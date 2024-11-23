@@ -12,9 +12,6 @@ interface DadosRegistroProps {
 }
 
 export function DadosRegistro({
-  idSensor,
-  bairro,
-  rua,
   dia,
   temperatura,
   umidade,
@@ -23,8 +20,7 @@ export function DadosRegistro({
 }: DadosRegistroProps) {
   return (
     <View style={styles.dadosBox}>
-      <Text style={styles.textoPrincipal}>Número de registro: {idSensor}</Text>
-      <Text style={styles.textoSecundario}>{bairro}, {rua}</Text>
+      
       <Text style={styles.textoPrincipal}>DATA: {dia}</Text>
       <View style={styles.dadosSensor}>
         <Text style={styles.textoSensor}>
