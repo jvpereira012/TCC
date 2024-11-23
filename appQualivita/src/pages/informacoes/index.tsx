@@ -9,7 +9,6 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { db } from '../../services/firebaseConfigs';
 import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 
-/* Os índices usados como referência estão aqui https://cetesb.sp.gov.br/ar/padroes-de-qualidade-do-ar/*/
 export default function Informacoes() {
   let [temp, setTemp] = useState("Carregando...");
   let [cidade, setCidade] = useState("Carregando...");
@@ -17,16 +16,12 @@ export default function Informacoes() {
   let [bairro, setBairro] = useState("Carregando...");
   let [umidade, setUmidade] = useState("Carregando...");
   let [estado, setEstado] = useState('');
-  let [cor, setCor] = useState('#00bf63');
-  let [corTexto, setCorTexto] = useState('#00bf63');
+  let [cor, setCor] = useState('#4CAF50');
+  let [corTexto, setCorTexto] = useState('#4CAF50');
   const [carregamento, setcarregamento] = useState(false);
   const navigation = useNavigation<StackTypes>();
   const [showInfoBox, setShowInfoBox] = useState(false);
   const translateYAnim = useRef(new Animated.Value(300)).current;
-
-
-
-
 
   const getInf = async () => {
     setcarregamento(true);
@@ -48,33 +43,24 @@ export default function Informacoes() {
         setBairro(data.bairro);
         setTemp(data.temperatura);
         setUmidade(data.umidade);
-        let co = data.infCO;
-        if (co <= 9) {
+
+        let co2 = data.infCO2;
+        if (co2 >= 400 && co2 <= 750) {
           setCor('#4CAF50');
           setCorTexto('#4CAF50');
           setEstado('Boa');
         }
-        else if (co > 9 && co <= 11) {
-          setCor('#FFFF00');
-          setCorTexto('#FFFF00');
-          setEstado('Moderada');
+        else if (co2 > 750 && co2 <= 1200) {
+          setCor('#e8b501');
+          setCorTexto('#e8b501');
+          setEstado('Média');
         }
-        else if (co > 11 && co <= 13) {
-          setCor('#B22222');
-          setCorTexto('#B22222');
+        else if (co2 > 1200) {
+          setCor('#e61913');
+          setCorTexto('#e61913');
           setEstado('Ruim')
         }
-        else if (co > 13 && co <= 15) {
-          setCor('#FF4500');
-          setCorTexto('#FF4500')
-          setEstado('Muito ruim');
-        }
-        else if (co > 15) {
-          setCor('#4B0082');
-          setCorTexto('#4B0082');
-          setEstado('Péssima');
-        }
-
+       
       } else {
         console.log('Nenhum documento encontrado.');
 
@@ -91,26 +77,22 @@ export default function Informacoes() {
     getInf();
   }, []);
 
-
-
   const toggleInfoBox = () => {
     if (showInfoBox) {
       Animated.timing(translateYAnim, {
-        toValue: 300, // Desce a caixinha para fora da tela
+        toValue: 300,
         duration: 300,
         useNativeDriver: true,
       }).start(() => setShowInfoBox(false));
     } else {
       setShowInfoBox(true);
       Animated.timing(translateYAnim, {
-        toValue: 0, // Sobe a caixinha na tela
+        toValue: 0,
         duration: 300,
         useNativeDriver: true,
       }).start();
     }
   };
-
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -124,14 +106,20 @@ export default function Informacoes() {
           <View style={styles.dadosSensor}>
             <Text style={styles.textoSensor}><Feather name="sun" size={20} /> {temp}ºC</Text>
             <Text style={styles.textoSensor}><MaterialCommunityIcons name="water-outline" size={20} />{umidade}% </Text>
-            <Text style={styles.textoSensor}><Entypo name="air" color={cor} size={20} /> {estado}</Text>
+            <Text style={{
+                fontSize: 20,
+                fontFamily: 'Poppins',
+                paddingHorizontal: 10,
+                color: corTexto
+              }}>
+               <Entypo name="air" size={20} color={cor} /> {estado}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
 
-      {/* Botão de informações no canto direito */}
       <TouchableOpacity style={styles.infoButton} onPress={toggleInfoBox}>
-        <AntDesign name="questioncircleo" size={29} color={cor} />
+        <AntDesign name="questioncircleo" size={29} color='#00bf63'/>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.refreshButton} onPress={getInf} disabled={carregamento}>
@@ -144,7 +132,6 @@ export default function Informacoes() {
         )}
       </TouchableOpacity>
 
-      {/* Caixinha de informações animada */}
       {showInfoBox && (
         <Animated.View style={[styles.infoBox, { transform: [{ translateY: translateYAnim }] }]}>
           <TouchableOpacity style={styles.closeButton} onPress={() => toggleInfoBox()}>
@@ -247,10 +234,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   }
 });
-
-
-
-
-
-
-

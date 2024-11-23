@@ -10,14 +10,13 @@ export default function Home() {
   const [localizacao, setLocalizacao] = useState<LocationObject | null>(null);
   const [mapType, setMapType] = useState<'standard' | 'satellite'>('standard');
   let [estado, setEstado] = useState('');
-  let [cor, setCor] = useState('#00bf63');
+  let [corTexto, setCorTexto] = useState('#00bf63');
   const [showInfo, setShowInfo] = useState(false);
   let [temp, setTemp] = useState("Carregando...");
   let [umidade, setUmidade] = useState("Carregando...");
   const translateYAnim = useRef(new Animated.Value(300)).current;
   const mapRef = useRef<MapView>(null);
 
-  // Estilo personalizado do mapa para remover os POIs
   const mapStyle = [
     {
       featureType: "poi",
@@ -66,28 +65,18 @@ export default function Home() {
         console.log(data);
         setTemp(data.temperatura);
         setUmidade(data.umidade);
-        let co = data.infCO;
-        if (co <= 9) {
-          setCor('#4CAF50');
+        let co2 = data.infCO2;
+        if (co2 >= 400 && co2 <= 750) {
+          setCorTexto('#00bf63');
           setEstado('Boa');
         }
-        else if (co > 9 && co <= 11) {
-          setCor('#FFFF00');
-          setEstado('Moderada');
+        else if (co2 > 750 && co2 <= 1200) {
+          setCorTexto('#e8b501');
+          setEstado('Média');
         }
-        else if (co > 11 && co <= 13) {
-          setCor('#B22222');
+        else if (co2 > 1200) {
+          setCorTexto('#e61913');
           setEstado('Ruim')
-        }
-        else if (co > 13 && co <= 15) {
-          setCor('#FF4500');
-         
-          setEstado('Muito ruim');
-        }
-        else if (co > 15) {
-          setCor('#4B0082');
-         
-          setEstado('Péssima');
         }
       } else {
         console.log('Nenhum documento encontrado.');
@@ -147,13 +136,17 @@ export default function Home() {
             mapType={mapType}
             showsUserLocation={true}
             followsUserLocation={true}
-            initialRegion={{
-              latitude: -23.239199295057237,
-              longitude: -45.83663704633708,
-              latitudeDelta: 0.005,
-              longitudeDelta: 0.005,
-            }}
-            customMapStyle={mapStyle} // Adiciona o estilo personalizado para ocultar POIs
+            showsMyLocationButton={false}
+            toolbarEnabled={false}
+            initialRegion={
+              localizacao && {
+                latitude: localizacao.coords.latitude,
+                longitude: localizacao.coords.longitude,
+                latitudeDelta: 0.005,
+                longitudeDelta: 0.005,
+              }
+            }            
+            customMapStyle={mapStyle} 
           >
             <Marker
               coordinate={{
@@ -174,7 +167,13 @@ export default function Home() {
           <Text style={styles.infoTitulo}>Informações do sensor</Text>
           <Text style={styles.infoText}>Temperatura no ambiente: {temp}°C</Text>
           <Text style={styles.infoText}>Umidade na área: {umidade}%</Text>
-          <Text style={styles.infoText}>Condição do ar: {estado}</Text>
+          <Text style={{
+              fontSize: 16,
+              marginVertical: 2,
+              fontFamily: 'Lovelo',
+              color: corTexto
+            }}>
+            Condição do ar: {estado}</Text>
         </Animated.View>
 
         {!showInfo && (
