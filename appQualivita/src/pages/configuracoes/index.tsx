@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { styles } from './styles';
 import { StackTypes } from '../../routes';
 import { useNavigation } from '@react-navigation/native';
@@ -39,10 +38,6 @@ export default function Configuracoes() {
           <Text style={styles.optionTextBold}>Como nossos sensores funcionam</Text>
         </TouchableOpacity>
 
-        <View style={styles.optionTitle}>
-          <Ionicons name="clipboard" size={24} color="#c4c4c4" style={styles.optionIcon} />
-          <Text style={styles.optionText}>Configurações universais</Text>
-        </View>
         <View style={styles.optionTitle}>
           <Ionicons name="clipboard" size={24} color="#c4c4c4" style={styles.optionIcon} />
           <Text style={styles.optionText}>Configurações universais</Text>
