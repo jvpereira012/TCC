@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
   },
   headerText: {
-    fontSize: 20,
+    fontSize: 26,
     fontFamily: 'Lovelo',
     color: '#00bf63',
   },
@@ -24,14 +24,14 @@ export const styles = StyleSheet.create({
   optionItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 15,
+    paddingVertical: 13,
     paddingHorizontal: 10,
     backgroundColor: '#f8f5fc',
     borderRadius: 10,
-    marginBottom: 15,
+    marginBottom: 10,
   },
   optionIcon: {
-    marginRight: 10,
+    marginRight: 4,
   },
   iconImage: {
     width: 24,
@@ -40,7 +40,18 @@ export const styles = StyleSheet.create({
   },
   optionTextBold: {
     fontSize: 16,
-    fontFamily: 'Lovelo',
+    fontFamily: 'Poppins-Bold',
     color: '#000',
+  },
+  optionText: {
+    fontSize: 16,
+    fontFamily: 'Lovelo',
+    color: '#c4c4c4',
+  },
+  optionTitle: {
+    marginTop:15,
+    marginBottom: 2,
+    flexDirection: 'row',
+    alignItems: 'center', // Centraliza verticalmente
   },
 });

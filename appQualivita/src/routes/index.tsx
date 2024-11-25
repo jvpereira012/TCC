@@ -14,6 +14,10 @@ import Home from "../pages/home";
 import Informacoes from "../pages/informacoes";
 import Graficos from "../pages/grafico";
 import Configuracoes from "../pages/configuracoes";
+import Perfil from "../pages/perfil";
+import FuncionamentoSensores from "../pages/infSensores";
+import PrivacidadeeSeguranca from "../pages/Privacidade e segurança";
+import TermosDeUso from "../pages/Termos de uso";
 
 
 
@@ -29,6 +33,10 @@ type StackNavigation = {
   Cadastro: undefined;
   TabNavigator: undefined;
   Graficos: undefined;
+  Perfil: undefined;
+  infSensores: undefined;
+  PrivacidadeeSeguranca: undefined;
+  TermosdeUso: undefined;
 }
 
 type TabNavigation = {
@@ -54,7 +62,7 @@ export function TabNavigator() {
       },
       tabBarActiveTintColor: '#efebef',
     }}>
-      
+
       <Tab.Screen
         name="MAPA"
         component={Home}
@@ -77,8 +85,8 @@ export function TabNavigator() {
           tabBarLabelStyle: { fontFamily: 'Lovelo', fontSize: 10, color: '#efebef' },
         }}
       />
-      <Tab.Screen 
-        name = "CONFIGURAÇÕES"
+      <Tab.Screen
+        name="CONFIGURAÇÕES"
         component={Configuracoes}
         options={{
           headerShown: false,
@@ -134,6 +142,26 @@ export default function Routes() {
       <Stack.Screen
         name="Graficos"
         component={Graficos}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Perfil"
+        component={Perfil}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="infSensores"
+        component={FuncionamentoSensores}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PrivacidadeeSeguranca"
+        component={PrivacidadeeSeguranca}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="TermosdeUso"
+        component={TermosDeUso}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
