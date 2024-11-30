@@ -21,7 +21,7 @@ export default function Perfil() {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         try {
-          const docRef = doc(db, 'usuarios', currentUser.uid); // Substitua 'usuarios' pelo nome correto da coleção no Firestore
+          const docRef = doc(db, 'usuarios', currentUser.uid); 
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             setUserProfile(docSnap.data() as UserProfile);
